@@ -1,5 +1,3 @@
-
-
 const CardDetails = [
   {
     id: 1,
@@ -32,8 +30,8 @@ const HowItWork = () => {
         <div className='w-6 h-[2px] bg-[#d39b16]'></div>
         <h4 className='text-[20px] text-[#d39b16] font-medium'>How it works</h4>
       </div>
-      <h1 className='text-[#373E4A]  text-[32px] font-semibold text-center mt-1'>
-        It's easy to join with Us
+      <h1 className='text-[#373E4A] text-[24px] md:text-[32px] font-semibold text-center mt-1'>
+        It's easy to join with us
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6'>
         {CardDetails.map((card, index) => (

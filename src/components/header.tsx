@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import HomeButton from './button';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -32,16 +35,36 @@ const Header = () => {
 
       {/* Desktop nav */}
       <nav className='hidden md:flex gap-6 text-white font-semibold uppercase'>
-        <Link to='/home' className='hover:text-[#d39b16]'>
+        <Link
+          to='/home'
+          className={`hover:text-[#d39b16] ${
+            location.pathname === '/home' ? 'text-[#d39b16]' : ''
+          }`}
+        >
           Home
         </Link>
-        <Link to='/about' className='hover:text-[#d39b16]'>
+        <Link
+          to='/about'
+          className={`hover:text-[#d39b16] ${
+            location.pathname === '/about' ? 'text-[#d39b16]' : ''
+          }`}
+        >
           About
         </Link>
-        <Link to='/services' className='hover:text-[#d39b16]'>
+        <Link
+          to='/services'
+          className={`hover:text-[#d39b16] ${
+            location.pathname === '/services' ? 'text-[#d39b16]' : ''
+          }`}
+        >
           Services
         </Link>
-        <Link to='/faq' className='hover:text-[#d39b16]'>
+        <Link
+          to='/faq'
+          className={`hover:text-[#d39b16] ${
+            location.pathname === '/faq' ? 'text-[#d39b16]' : ''
+          }`}
+        >
           FAQ
         </Link>
         {/* <Link to='/contact' className='hover:text-[#d39b16]'>
@@ -100,8 +123,22 @@ const Header = () => {
           </Link> */}
 
           <div className='flex flex-col gap-2 w-[80%] mt-4'>
-            <HomeButton title='Log in' type='submit' bg='#3c1414' width={''} />
-            <HomeButton title='Sign up' type='submit' bg='#d39b16' width={''} />
+            <Link to='/login'>
+              <HomeButton
+                title='Log in'
+                type='submit'
+                bg='#3c1414'
+                width={''}
+              />
+            </Link>
+            <Link to='/register'>
+              <HomeButton
+                title='Sign up'
+                type='submit'
+                bg='#d39b16'
+                width={''}
+              />
+            </Link>
           </div>
         </div>
       )}

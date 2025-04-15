@@ -1,15 +1,9 @@
-import { useEffect } from 'react';
 import AboutImg from '../../assets/about.jpg';
 import EyeIcon from '../../assets/svg/eye';
 import GoalIcon from '../../assets/svg/goal';
 import MissionIcon from '../../assets/svg/mission';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 const AboutUs = () => {
-  useEffect(() => {
-    AOS.init({ duration: 800 });
-  }, []);
   return (
     <div className=' bg-[#d39b1612] h-full py-[40px] px-[5%] mt-[30px] md:mt-[80px] '>
       <div className='flex flex-row items-center mb-8 justify-center gap-2'>
@@ -22,7 +16,7 @@ const AboutUs = () => {
         <div className='md:hidden lg:block'>
           <img src={AboutImg} alt='about' className='rounded-lg' />
         </div>
-        <div data-aos='fade-left'>
+        <div>
           <h2 className='text-center md:text-center lg:text-left text-[24px] md:text-[32px] text-[#373E4A] font-bold mb-5  '>
             We care about your money and safety.
           </h2>
