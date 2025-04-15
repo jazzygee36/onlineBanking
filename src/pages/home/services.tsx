@@ -28,10 +28,10 @@ const HomeServices = () => {
     <div className='py-10 p-[5%] bg-[#d39b16] '>
       {/* Header */}
       <div className='flex flex-row items-center justify-center gap-2 '>
-        <div className='w-6 h-[2px] bg-[#3c1414]'></div>
-        <h4 className='text-[20px] text-[#3c1414] font-medium'>Our Services</h4>
+        <div className='w-6 h-[2px] bg-white'></div>
+        <h4 className='text-[20px] text-white font-medium'>Our Services</h4>
       </div>
-      <h1 className='text-white text-[27px] md:text-[32px] font-semibold text-center mt-1'>
+      <h1 className='text-white text-[24px] md:text-[32px] font-semibold text-center mt-1'>
         We make your life comfortable with our services.
       </h1>
 
@@ -50,7 +50,7 @@ const HomeServices = () => {
 
             {/* Text at bottom */}
             <div className='p-4 text-center'>
-              <h3 className='text-[#373E4A] font-semibold text-[24px]'>
+              <h3 className='text-[#373E4A] font-semibold text-[20px] md:text-[24px]'>
                 {card.title}
               </h3>
               <p className='text-gray-600 text-[16px]  mt-2'>

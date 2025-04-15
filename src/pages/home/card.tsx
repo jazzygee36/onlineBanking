@@ -50,7 +50,7 @@ const Card = () => {
         >
           <div className='relative z-10'>
             <card.icon className='w-16 h-16 mb-4 text-[#d39b16] group-hover:text-white transition-transform duration-300 group-hover:rotate-12' />
-            <h3 className='text-[#373E4A] font-semibold text-[24px] group-hover:text-white transition-colors duration-300'>
+            <h3 className='text-[#373E4A] font-semibold text-[20px] md:text-[24px] group-hover:text-white transition-colors duration-300'>
               {card.title}
             </h3>
             <p className='text-gray-600 text-[16px] group-hover:text-white mt-2 transition-colors duration-300'>
