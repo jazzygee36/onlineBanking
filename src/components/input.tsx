@@ -1,14 +1,26 @@
 import { InputProps } from '../utils/interface';
 
-const HomeInput = ({ type, placeholder, label }: InputProps) => {
+const HomeInput = ({
+  type,
+  placeholder,
+  label,
+  onChange,
+  value,
+  name,
+  border,
+  onKeyPress,
+}: InputProps) => {
   return (
-    <div>
-      <label className='text-[14px] mb-8'>{label}</label>
+    <div className='w-full'>
+      <h3 className='text-[#1E1E1E] text-[14px] font-roboto mb-3.5'>{label}</h3>
       <input
         type={type}
         placeholder={placeholder}
-        className='h-[46px] border-2 border-gray-100
-       outline-none w-full bg-white placeholder:px-2  '
+        name={name}
+        value={value}
+        onChange={onChange}
+        onKeyPress={onKeyPress}
+        className={`h-[52px] w-full  border-solid border-[1px] border-[#E8ECEF] ${border} rounded-[2px] outline-none px-4 placeholder-[#98A9BC] placeholder:text-[14px] placeholder:font-[400]`}
       />
     </div>
   );

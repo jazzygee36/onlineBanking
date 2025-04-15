@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import HomeButton from './button';
-import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const location = useLocation();
@@ -14,16 +13,17 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navLinkClasses = (path: string) =>
+    `hover:text-[#d39b16] ${
+      location.pathname === path ? 'text-[#d39b16]' : ''
+    }`;
 
   return (
     <header
@@ -35,41 +35,18 @@ const Header = () => {
 
       {/* Desktop nav */}
       <nav className='hidden md:flex gap-6 text-white font-semibold uppercase'>
-        <Link
-          to='/home'
-          className={`hover:text-[#d39b16] ${
-            location.pathname === '/home' ? 'text-[#d39b16]' : ''
-          }`}
-        >
+        <Link to='/home' className={navLinkClasses('/home')}>
           Home
         </Link>
-        <Link
-          to='/about'
-          className={`hover:text-[#d39b16] ${
-            location.pathname === '/about' ? 'text-[#d39b16]' : ''
-          }`}
-        >
+        <Link to='/about' className={navLinkClasses('/about')}>
           About
         </Link>
-        <Link
-          to='/services'
-          className={`hover:text-[#d39b16] ${
-            location.pathname === '/services' ? 'text-[#d39b16]' : ''
-          }`}
-        >
+        <Link to='/services' className={navLinkClasses('/services')}>
           Services
         </Link>
-        <Link
-          to='/faq'
-          className={`hover:text-[#d39b16] ${
-            location.pathname === '/faq' ? 'text-[#d39b16]' : ''
-          }`}
-        >
+        <Link to='/faq' className={navLinkClasses('/faq')}>
           FAQ
         </Link>
-        {/* <Link to='/contact' className='hover:text-[#d39b16]'>
-          Contact
-        </Link> */}
       </nav>
 
       {/* Desktop buttons */}
@@ -92,43 +69,40 @@ const Header = () => {
         <div className='absolute top-[72px] left-0 w-full bg-[#3c1414] z-[100] flex flex-col items-center gap-4 py-6 md:hidden text-white font-semibold uppercase transition-all duration-300'>
           <Link
             to='/home'
-            className='hover:text-[#d39b16]'
+            className={navLinkClasses('/home')}
             onClick={toggleMenu}
           >
             Home
           </Link>
           <Link
             to='/about'
-            className='hover:text-[#d39b16]'
+            className={navLinkClasses('/about')}
             onClick={toggleMenu}
           >
             About
           </Link>
           <Link
             to='/services'
-            className='hover:text-[#d39b16]'
+            className={navLinkClasses('/services')}
             onClick={toggleMenu}
           >
             Services
           </Link>
-          <Link to='/faq' className='hover:text-[#d39b16]' onClick={toggleMenu}>
-            FAQ
-          </Link>
-          {/* <Link
-            to='/contact'
-            className='hover:text-[#d39b16]'
+          <Link
+            to='/faq'
+            className={navLinkClasses('/faq')}
             onClick={toggleMenu}
           >
-            Contact
-          </Link> */}
+            FAQ
+          </Link>
 
-          <div className='flex flex-col gap-2 w-[80%] mt-4'>
+          <div className='flex flex-col justify-center gap-2 w-[50%] mt-4'>
             <Link to='/login'>
               <HomeButton
                 title='Log in'
                 type='submit'
                 bg='#3c1414'
-                width={''}
+                width={'100%'}
               />
             </Link>
             <Link to='/register'>
@@ -136,7 +110,7 @@ const Header = () => {
                 title='Sign up'
                 type='submit'
                 bg='#d39b16'
-                width={''}
+                width={'100%'}
               />
             </Link>
           </div>
