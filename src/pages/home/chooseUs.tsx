@@ -76,7 +76,7 @@ const ChooseUs = () => {
         </h4>
       </div>
       <div className='mx-[5%]'>
-        <h1 className='text-white text-[32px] font-semibold text-center mt-1 '>
+        <h1 className='text-white text-[20px] md:text-[32px] font-semibold text-center mt-1 '>
           We are giving you the best services
         </h1>
       </div>

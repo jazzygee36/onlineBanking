@@ -61,7 +61,7 @@ const OurPlans = () => {
       </div>
 
       <div className='mx-[5%]'>
-        <h1 className='text-[#373E4A] text-[32px] font-semibold text-center mt-1'>
+        <h1 className='text-[#373E4A] text-[20px] md:text-[32px] font-semibold text-center mt-1'>
           We Have The Best Loan Plans.
         </h1>
       </div>
