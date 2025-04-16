@@ -5,10 +5,11 @@ import {
   step1Schema,
   step2Schema,
   step3Schema,
+  step4Schema,
 } from '../../utils/validation';
 
 import { IndividualFormProps } from '../../utils/interface';
-import axios from 'axios';
+// import axios from 'axios';
 import HomeInput from '../../components/input';
 import SelectInput from '../../components/selectInput';
 import HomeButton from '../../components/button';
@@ -20,7 +21,17 @@ interface ValidationErrors {
   password?: { _errors: string[] };
   confirmPassword?: { _errors: string[] };
   email?: { _errors: string[] };
-  verificationCode?: { _errors: string[] };
+  username?: { _errors: string[] };
+  occupation?: { _errors: string[] };
+  gender?: { _errors: string[] };
+  dob?: { _errors: string[] };
+  country?: { _errors: string[] };
+  state?: { _errors: string[] };
+  city?: { _errors: string[] };
+  zipCode?: { _errors: string[] };
+  address?: { _errors: string[] };
+  acctType?: { _errors: string[] };
+  acctPin?: { _errors: string[] };
 }
 
 type FormData = z.infer<typeof individualSchema>;
@@ -40,7 +51,18 @@ const IndividualForm: FC<IndividualFormProps> = ({
     confirmPassword: '',
     email: '',
     phoneNumber: '',
-    verificationCode: '',
+    // verificationCode: '',
+    username: '',
+    occupation: '',
+    gender: '',
+    dob: '',
+    state: '',
+    country: '',
+    zipCode: '',
+    city: '',
+    address: '',
+    acctType: '',
+    acctPin: '',
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -65,33 +87,10 @@ const IndividualForm: FC<IndividualFormProps> = ({
       }
     } else if (step === 2) {
       result = step2Schema.safeParse(formData);
-      if (result.success) {
-        localStorage.setItem('phoneNumber', formData.phoneNumber);
-
-        // Move API call here
-        try {
-          setLoading(true);
-          const { firstName, lastName, password, email, phoneNumber } =
-            formData;
-          const res = await axios.post(
-            `${import.meta.env.VITE_BASE_URL}/register-individual`,
-            { firstName, lastName, password, email, phoneNumber }
-          );
-
-          if (res.data.message === 'Successfully registered.') {
-            nextStep();
-          } else {
-            setApiError('Registration failed. Please try again.');
-          }
-        } catch (error: any) {
-          setApiError(
-            error.response?.data?.message ||
-              'Something went wrong. Please try again.'
-          );
-        } finally {
-          setLoading(false);
-        }
-      }
+    } else if (step === 3) {
+      result = step3Schema.safeParse(formData);
+    } else if (step === 4) {
+      result = step4Schema.safeParse(formData);
     } else {
       result = { success: true };
     }
@@ -105,48 +104,56 @@ const IndividualForm: FC<IndividualFormProps> = ({
           firstName: validationErrors.firstName?._errors[0] || '',
           lastName: validationErrors.lastName?._errors[0] || '',
           email: validationErrors.email?._errors[0] || '',
+          username: validationErrors.username?._errors[0] || '',
+          occupation: validationErrors.occupation?._errors[0] || '',
+          gender: validationErrors.gender?._errors[0] || '',
+          // phoneNumber: validationErrors.phoneNumber?._errors[0] || '',
+          dob: validationErrors.dob?._errors[0] || '',
         }),
         ...(step === 2 && {
+          phoneNumber: validationErrors.phoneNumber?._errors[0] || '',
+          country: validationErrors.country?._errors[0] || '',
+          state: validationErrors.state?._errors[0] || '',
+          city: validationErrors.city?._errors[0] || '',
+          zipCode: validationErrors.zipCode?._errors[0] || '',
+          address: validationErrors.address?._errors[0] || '',
+        }),
+        ...(step === 3 && {
+          acctType: validationErrors.acctType?._errors[0] || '',
+          acctPin: validationErrors.acctPin?._errors[0] || '',
+        }),
+        ...(step === 4 && {
           password: validationErrors.password?._errors[0] || '',
           confirmPassword: validationErrors.confirmPassword?._errors[0] || '',
-          phoneNumber: validationErrors.phoneNumber?._errors[0] || '',
         }),
       }));
       return;
     }
 
-    if (step !== 2) {
+    if (step !== 4) {
       nextStep(); // Proceed to next step only if it's not step 2 (handled inside API call)
     }
+  };
+
+  const handleBack = () => {
+    prevStep();
   };
 
   const handleFinishRegistration = async () => {
     // Validate step 3 using step3Schema
     const result = step3Schema.safeParse(formData);
     if (!result.success) {
-      const validationErrors = result.error?.format() || {};
       setErrors((prevErrors) => ({
         ...prevErrors,
-        verificationCode:
-          validationErrors.verificationCode?._errors[0] || 'Code is required',
+        // verificationCode:
+        // validationErrors.verificationCode?._errors[0] || 'Code is required',
       }));
       return; // Do not finish registration if validation fails
     }
     try {
       setLoading(true);
-      const { verificationCode, email } = formData;
-      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/verify`, {
-        verificationCode,
-        email,
-      });
 
-      if (res.data.message === 'Email successfully verified') {
-        localStorage.setItem('token', res.data.token);
-        nextStep();
-        setCompleteRegistration(true);
-      } else {
-        setApiError('Registration failed. Please try again.');
-      }
+      setCompleteRegistration(true);
     } catch (error: any) {
       setApiError(
         error.response?.data?.message ||
@@ -199,6 +206,84 @@ const IndividualForm: FC<IndividualFormProps> = ({
               )}
             </div>
           </div>
+          <div className='mt-5 flex items-center gap-5'>
+            <div>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your Username'}
+                label='Your Username'
+                name='username'
+                value={formData.username}
+                onChange={handleChange}
+                border={
+                  errors.username ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.username && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.username}
+                </p>
+              )}
+            </div>
+            <div className='w-[50%]'>
+              <SelectInput
+                label='Select your Gender'
+                option={[
+                  { value: '', label: 'Select gender' },
+                  { value: 'Male', label: 'Male' },
+                  { value: 'Female', label: 'Female' },
+
+                  { value: 'Prefer not to say', label: 'Prefer not to say' },
+                ]}
+                name={'gender'}
+                value={formData.gender}
+                onChange={handleChange}
+                border={errors.gender ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+              />
+              {errors.gender && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.gender}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className='mt-5 flex items-center gap-5'>
+            <div className='w-[50%]'>
+              <HomeInput
+                type={'date'}
+                placeholder={'Select your Date of Birth'}
+                label='Your Date of Birth'
+                name='dob'
+                value={formData.dob}
+                onChange={handleChange}
+                border={errors.dob ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+              />
+              {errors.dob && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.dob}
+                </p>
+              )}
+            </div>
+            <div>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your Occupation'}
+                label='Your Occupation'
+                name='occupation'
+                value={formData.occupation}
+                onChange={handleChange}
+                border={
+                  errors.occupation ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.occupation && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.occupation}
+                </p>
+              )}
+            </div>
+          </div>
+
           <div className='mt-5'>
             <HomeInput
               type={'email'}
@@ -220,7 +305,132 @@ const IndividualForm: FC<IndividualFormProps> = ({
 
       {step === 2 && (
         <>
-          <div>
+          <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
+            Contact Information
+          </div>
+          <div className='my-5 flex items-center gap-5'>
+            <div className='w-[50%]'>
+              <SelectInput
+                label='Select your Country'
+                option={[
+                  { value: '', label: 'Select country' },
+                  { value: 'United States', label: 'United States' },
+                  { value: 'Canada', label: 'Canada' },
+                  { value: 'Nigeria', label: 'Nigeria' },
+                  { value: 'India', label: 'India' },
+                ]}
+                name={'country'}
+                value={formData.country}
+                onChange={handleChange}
+                border={
+                  errors.country ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.country && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.country}
+                </p>
+              )}
+            </div>
+            <div>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your State'}
+                label='Enter your State'
+                name='state'
+                value={formData.state}
+                onChange={handleChange}
+                border={errors.state ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+              />
+              {errors.state && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.state}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className='my-5 flex items-center gap-5'>
+            <div className='w-[50%]'>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your City'}
+                label='Enter your City'
+                name='city'
+                value={formData.city}
+                onChange={handleChange}
+                border={errors.city ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+              />
+              {errors.city && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.city}
+                </p>
+              )}
+            </div>
+            <div>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your Zip Code'}
+                label='Enter your Zip Code'
+                name='zipCode'
+                value={formData.zipCode}
+                onChange={handleChange}
+                border={
+                  errors.zipCode ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.zipCode && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.zipCode}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className='my-5 flex items-center gap-5'>
+            <div className='w-[50%]'>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your Address'}
+                label='Enter your Address'
+                name='address'
+                value={formData.address}
+                onChange={handleChange}
+                border={
+                  errors.address ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.address && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.address}
+                </p>
+              )}
+            </div>
+            <div>
+              <HomeInput
+                type={'text'}
+                placeholder={'Enter your Phone Number'}
+                label='Enter your Phone number'
+                name='phoneNumber'
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                border={
+                  errors.phoneNumber ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (!/[0-9 +]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              />
+              {errors.phoneNumber && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.phoneNumber}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* <div>
             <HomeInput
               type={'password'}
               placeholder={'Enter your Password'}
@@ -255,36 +465,55 @@ const IndividualForm: FC<IndividualFormProps> = ({
             )}
           </div>
 
-          <h3 className='text-[#1E1E1E] text-[14px] font-roboto'>
-            Phone Number
-          </h3>
-          <div className='flex items-center gap-3'>
-            <div className='w-[30%]'>
+          </div> */}
+        </>
+      )}
+      {step === 3 && (
+        <>
+          <div className='bg-[#3c1414] w-full py-2 mt-5 mb-5 text-white text-center  font-roboto text-[14px] font-medium'>
+            <h2>Bank Account Information.</h2>
+            <span className='text-1 text-gray-400 font-roboto text-center'>
+              Your information is secure with us.
+            </span>
+          </div>
+
+          <div className='my-5 flex items-center gap-5'>
+            <div className='w-[50%]'>
               <SelectInput
-                option={[{ value: '+123', label: '+123' }]}
-                name={''}
-                value={''}
+                label='Select Account Type'
+                option={[
+                  { value: '', label: 'select country' },
+                  { value: 'current', label: 'Current Account' },
+                  { value: 'saving', label: 'Savings Account' },
+                  { value: 'fixed', label: 'Fixed deposite Account' },
+                  { value: 'swift', label: 'Swift Account' },
+                  { value: 'premium-swift', label: 'Premium Swift Account' },
+
+                  { value: 'Prefer not to say', label: 'Prefer not to say' },
+                ]}
+                name={'acctType'}
+                value={formData.acctType}
                 onChange={handleChange}
                 border={
-                  errors.phoneNumber ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  errors.acctType ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
                 }
               />
-              {errors.phoneNumber && (
+              {errors.acctType && (
                 <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.phoneNumber}
+                  {errors.acctType}
                 </p>
               )}
             </div>
-            <div className='w-full'>
+            <div>
               <HomeInput
                 type={'text'}
-                placeholder={'Enter your Phone Number'}
-                label=''
-                name='phoneNumber'
-                value={formData.phoneNumber}
+                placeholder={'Enter your Pin'}
+                label='Enter Account Pin'
+                name='acctPin'
+                value={formData.acctPin}
                 onChange={handleChange}
                 border={
-                  errors.phoneNumber ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  errors.acctPin ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
                 }
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
                   if (!/[0-9 +]/.test(event.key)) {
@@ -292,67 +521,83 @@ const IndividualForm: FC<IndividualFormProps> = ({
                   }
                 }}
               />
-              {errors.phoneNumber && (
+              {errors.acctPin && (
                 <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.phoneNumber}
+                  {errors.acctPin}
                 </p>
               )}
             </div>
           </div>
         </>
       )}
-
-      {step === 3 && (
-        <div>
-          <p className='text-[14px] text-[#1E1E1E] mb-6 '>
-            Enter the 4-digit code that was sent to{' '}
-            {localStorage.getItem('phoneNumber')} and{' '}
-            {localStorage.getItem('email')}
-          </p>
-          <div>
+      {step === 4 && (
+        <>
+          <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
+            Create Password
+          </div>
+          <div className='my-5 flex items-center gap-5'>
             <HomeInput
-              type='text'
-              placeholder='Enter code'
-              name='verificationCode'
-              value={formData.verificationCode}
+              type={'password'}
+              placeholder={'Enter your Password'}
+              label='Password'
+              name='password'
+              value={formData.password}
               onChange={handleChange}
-              border={
-                errors.verificationCode
-                  ? 'border-[#EF4444]'
-                  : 'border-[#E8ECEF]'
-              }
-              onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                if (!/[0-9 +]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
+              border={errors.password ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
             />
-            {errors.verificationCode && (
+            {errors.password && (
               <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.verificationCode}
+                {errors.password}
               </p>
             )}
           </div>
-          <p className='mt-2.5 text-[#98A9BCCC] text-[12px] text-center'>
-            Resend Code
-          </p>
-        </div>
+          <div className=''>
+            <HomeInput
+              type={'password'}
+              placeholder={'Confirm Password'}
+              label='Confirm Password'
+              name='confirmPassword'
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              border={
+                errors.confirmPassword ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+              }
+            />
+            {errors.confirmPassword && (
+              <p className='text-[#EF4444] text-[10px] font-medium'>
+                {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+        </>
       )}
 
-      <div className='flex justify-center mt-6'>
-        {step < 3 && (
-          <HomeButton
-            title={step === 2 ? 'VERIFY ACCOUNT' : 'NEXT STEP'}
-            bg=''
-            onClick={handleNextStep}
-            color={'#D71E0E'}
-            disabled={loading}
-            type={'submit'}
-            width={''}
-          />
+      <div className='flex justify-between items-center mt-6 w-full'>
+        {step < 4 && (
+          <div className='flex items-center justify-between w-[100%]'>
+            <HomeButton
+              title={step === 1 ? '' : 'BACK'}
+              bg=''
+              onClick={handleBack}
+              color={'#3c1414'}
+              disabled={loading}
+              type={'submit'}
+              width={''}
+            />
+
+            <HomeButton
+              title={step < 4 ? 'NEXT STEP' : 'VERIFY ACCOUNT'}
+              bg=''
+              onClick={handleNextStep}
+              color={'#D71E0E'}
+              disabled={loading}
+              type={'submit'}
+              width={''}
+            />
+          </div>
         )}
-        {step === 3 && (
-          <div className='flex items-center justify-between w-full mt-44'>
+        {step === 4 && (
+          <div className='flex items-center justify-between w-full '>
             <h2
               onClick={() => {
                 setFormHeader(false);

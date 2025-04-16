@@ -79,7 +79,7 @@ const Login = () => {
 
   return (
     <>
-      <div className='flex flex-col justify-center'>
+      <div className='flex flex-col justify-center items-center'>
         <div className='z-100 w-full'>
           <img
             src={`https://www.trustensurefinance.com/InternetBanking/img/logo2.png`}

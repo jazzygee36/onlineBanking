@@ -12,7 +12,7 @@ const HomeInput = ({
 }: InputProps) => {
   return (
     <div className='w-full'>
-      <h3 className='text-[#1E1E1E] text-[14px] font-roboto mb-3.5'>{label}</h3>
+      <h3 className='text-[#1E1E1E] text-[13px] font-roboto mb-2'>{label}</h3>
       <input
         type={type}
         placeholder={placeholder}

@@ -8,7 +8,17 @@ const baseIndividualSchema = z.object({
   phoneNumber: z.string().min(3, 'This field is required'),
   password: z.string().min(3, 'This field is required'),
   confirmPassword: z.string().min(3, 'This field is required'),
-  verificationCode: z.string().min(4, 'This field is required'),
+  username: z.string().min(4, 'This field is required'),
+  occupation: z.string().min(4, 'This field is required'),
+  gender: z.string().min(4, 'This field is required'),
+  dob: z.string().min(4, 'This field is required'),
+  state: z.string().min(4, 'This field is required'),
+  country: z.string().min(4, 'This field is required'),
+  zipCode: z.string().min(4, 'This field is required'),
+  city: z.string().min(4, 'This field is required'),
+  address: z.string().min(4, 'This field is required'),
+  acctType: z.string().min(4, 'This field is required'),
+  acctPin: z.string().min(4, 'This field is required'),
 });
 
 // Full schema with refinement for the entire form
@@ -25,23 +35,39 @@ export const step1Schema = baseIndividualSchema.pick({
   firstName: true,
   lastName: true,
   email: true,
+  username: true,
+  occupation: true,
+  gender: true,
+  // phoneNumber: true,
+  dob: true,
 });
 
 // For step 2, pick the remaining fields and add a refinement to ensure passwords match:
-export const step2Schema = baseIndividualSchema
+export const step2Schema = baseIndividualSchema.pick({
+  // password: true,
+  // confirmPassword: true,
+  phoneNumber: true,
+  state: true,
+  country: true,
+  zipCode: true,
+  city: true,
+  address: true,
+});
+
+export const step3Schema = baseIndividualSchema.pick({
+  acctType: true,
+  acctPin: true,
+});
+
+export const step4Schema = baseIndividualSchema
   .pick({
     password: true,
     confirmPassword: true,
-    phoneNumber: true,
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',
     path: ['confirmPassword'],
   });
-
-export const step3Schema = baseIndividualSchema.pick({
-  verificationCode: true,
-});
 
 export const signInSchema = z.object({
   email: z.string().email('Email address is incorrect.'),
@@ -69,31 +95,3 @@ export const corporateSchema = baseCorporateSchema.refine(
     path: ['confirmPassword'],
   }
 );
-// For step 1, pick only the necessary fields:
-export const corporateStep1Schema = baseCorporateSchema.pick({
-  companyName: true,
-  businessType: true,
-  incorporationDate: true,
-});
-
-export const corporateStep2Schema = baseCorporateSchema
-  .pick({
-    email: true,
-    password: true,
-    confirmPassword: true,
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
-  });
-
-export const corporateStep3Schema = baseIndividualSchema.pick({
-  verificationCode: true,
-});
-
-export const otpVerifySchema = z.object({
-  verificationCode: z.string().min(3, 'This field is required.'),
-});
-export const resetSchema = z.object({
-  email: z.string().email('Email address is incorrect.'),
-});
