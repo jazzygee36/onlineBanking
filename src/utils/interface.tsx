@@ -65,3 +65,13 @@ export interface ErrorProps {
   title: string;
   onClose?: () => void;
 }
+
+export interface dashboardProps {
+  title: string;
+  setIsOpen?: (val: boolean) => void;
+  isOpen?: boolean;
+  children: React.ReactNode;
+}
+export interface headerProps {
+  title: string;
+}

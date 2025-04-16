@@ -34,7 +34,7 @@ const SignUp = () => {
     }`;
 
   return (
-    <div className=' w-full flex flex-col items-center justify-center bg-yellow-50 '>
+    <div className=' w-full flex flex-col items-center justify-center bg-yellow-50 h-full '>
       <div className='z-100 w-full'>
         <img
           src={`https://www.trustensurefinance.com/InternetBanking/img/logo2.png`}

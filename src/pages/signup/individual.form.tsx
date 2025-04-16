@@ -141,7 +141,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
 
   const handleFinishRegistration = async () => {
     // Validate step 3 using step3Schema
-    const result = step3Schema.safeParse(formData);
+    const result = step4Schema.safeParse(formData);
     if (!result.success) {
       setErrors((prevErrors) => ({
         ...prevErrors,

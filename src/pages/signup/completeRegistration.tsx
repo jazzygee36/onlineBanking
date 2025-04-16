@@ -10,13 +10,12 @@ const CompleteRegistration = () => {
           Registration Complete
         </h2>
         <p className='text-[14px] font-light text-[#252631]'>
-          Dear [fName]. Your registration is now complete. You may proceed to
-          your dashboard and start trading commodities.
+          Your registration is now complete. You may proceed to your dashboard.
         </p>
 
         <h4
           className='text-[#D71E0E] text-[14px] font-medium mt-[28px] cursor-pointer'
-          onClick={() => navigate('/market')}
+          onClick={() => navigate('/dashboard')}
         >
           GO TO DASHBOARD
         </h4>

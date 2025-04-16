@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useState } from 'react';
 import { z } from 'zod';
@@ -151,7 +151,7 @@ const Login = () => {
               <div>
                 <h2
                   className='text-[#D71E0E] text-[14px] font-[400] cursor-pointer'
-                  onClick={() => navigate('/password-reset')}
+                  // onClick={() => navigate('/password-reset')}
                 >
                   Forget password?
                 </h2>
@@ -178,6 +178,12 @@ const Login = () => {
               width={'100%'}
             />
           </div>
+          <Link to='/register'>
+            <p className='mt-1'>
+              Don't have an account?{' '}
+              <span className='cursor-pointer text-[blue]'>Sign up </span>
+            </p>
+          </Link>
         </div>
       </div>
       {/* <ChatBoxContainer /> */}
