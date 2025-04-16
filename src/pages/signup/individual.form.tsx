@@ -206,8 +206,8 @@ const IndividualForm: FC<IndividualFormProps> = ({
               )}
             </div>
           </div>
-          <div className='mt-5 flex items-center gap-5'>
-            <div>
+          <div className='mt-5 flex items-center gap-5 w-full'>
+            <div className='w-[50%]'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Username'}
@@ -247,7 +247,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
               )}
             </div>
           </div>
-          <div className='mt-5 flex items-center gap-5'>
+          <div className='mt-5 flex items-center gap-5 w-full'>
             <div className='w-[50%]'>
               <HomeInput
                 type={'date'}
@@ -264,7 +264,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 </p>
               )}
             </div>
-            <div>
+            <div className='w-[50%]'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Occupation'}
@@ -284,7 +284,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
             </div>
           </div>
 
-          <div className='mt-5'>
+          <div className='mt-5 w-full'>
             <HomeInput
               type={'email'}
               placeholder={'Enter your Email'}
@@ -308,8 +308,8 @@ const IndividualForm: FC<IndividualFormProps> = ({
           <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
             Contact Information
           </div>
-          <div className='my-5 flex items-center gap-5'>
-            <div className='w-[50%]'>
+          <div className='my-5  items-center gap-5 w-full'>
+            <div className=''>
               <SelectInput
                 label='Select your Country'
                 option={[
@@ -332,7 +332,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 </p>
               )}
             </div>
-            <div>
+            <div className='mt-5'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your State'}
@@ -350,7 +350,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
             </div>
           </div>
 
-          <div className='my-5 flex items-center gap-5'>
+          <div className='my-5 flex items-center gap-5 w-full'>
             <div className='w-[50%]'>
               <HomeInput
                 type={'text'}
@@ -367,7 +367,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 </p>
               )}
             </div>
-            <div>
+            <div className='w-[50%]'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Zip Code'}
@@ -386,8 +386,8 @@ const IndividualForm: FC<IndividualFormProps> = ({
               )}
             </div>
           </div>
-          <div className='my-5 flex items-center gap-5'>
-            <div className='w-[50%]'>
+          <div className='my-5  items-center gap-5 w-full'>
+            <div className=''>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Address'}
@@ -405,7 +405,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 </p>
               )}
             </div>
-            <div>
+            <div className='mt-5'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Phone Number'}
@@ -429,43 +429,6 @@ const IndividualForm: FC<IndividualFormProps> = ({
               )}
             </div>
           </div>
-
-          {/* <div>
-            <HomeInput
-              type={'password'}
-              placeholder={'Enter your Password'}
-              label='Password'
-              name='password'
-              value={formData.password}
-              onChange={handleChange}
-              border={errors.password ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-            />
-            {errors.password && (
-              <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.password}
-              </p>
-            )}
-          </div>
-          <div className='my-5'>
-            <HomeInput
-              type={'password'}
-              placeholder={'Confirm Password'}
-              label='Confirm Password'
-              name='confirmPassword'
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              border={
-                errors.confirmPassword ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-              }
-            />
-            {errors.confirmPassword && (
-              <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-
-          </div> */}
         </>
       )}
       {step === 3 && (
@@ -477,8 +440,8 @@ const IndividualForm: FC<IndividualFormProps> = ({
             </span>
           </div>
 
-          <div className='my-5 flex items-center gap-5'>
-            <div className='w-[50%]'>
+          <div className='my-5  gap-5 w-full'>
+            <div className=''>
               <SelectInput
                 label='Select Account Type'
                 option={[
@@ -504,7 +467,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 </p>
               )}
             </div>
-            <div>
+            <div className='mt-5'>
               <HomeInput
                 type={'text'}
                 placeholder={'Enter your Pin'}
