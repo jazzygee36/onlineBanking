@@ -19,7 +19,7 @@ const Links = [
   },
   { name: 'View statement', icon: Statement, path: '/statement' },
   {
-    name: 'User settings',
+    name: 'Profile settings',
     icon: Profile,
     path: '/profile',
   },
@@ -97,8 +97,12 @@ const Sidebar = ({
           : 'text-gray-600 hover:bg-[#F1EEF6]'
       }`}
               onClick={() => {
-                navigate(item.path); // Navigate to the item's path
-                setIsOpen(false); // Close the sidebar
+                if (item.name === 'Contact us') {
+                  window.location.href = 'mailto:info@yourcompany.com'; // Replace with your actual email
+                } else {
+                  navigate(item.path);
+                }
+                setIsOpen(false);
               }}
             >
               {typeof item.icon === 'function' ? <item.icon /> : item.icon}
