@@ -2,7 +2,7 @@ import { Menu } from 'lucide-react';
 import Bell from '../../assets/svg/bell';
 
 const Header = ({
-  title,
+  // title,
   setIsOpen,
 }: {
   title: string;
@@ -21,9 +21,7 @@ const Header = ({
         <Menu onClick={() => setIsOpen(true)} className='cursor-pointer' />
       </div>
 
-      <h3 className='text-[16px] text-[#A74F5D] font-medium hidden md:block'>
-        {title}
-      </h3>
+      <h3 className='text-[16px] text-[#A74F5D] font-medium hidden md:block'></h3>
 
       {/* Date & Notification */}
       <div className='flex items-center gap-4'>

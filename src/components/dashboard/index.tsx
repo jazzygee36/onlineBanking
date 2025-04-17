@@ -15,7 +15,7 @@ const MainDashboard = ({ children }: dashboardProps) => {
       {/* Main Content */}
       <div className='flex flex-col flex-1'>
         <Header title='Dashboard' setIsOpen={setIsOpen} />
-        <div className='p-4 '>{children}</div>
+        <div className='p-4 bg-[#F8FAFB] h-full'>{children}</div>
       </div>
     </div>
   );

@@ -1,11 +1,34 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { ChartNoAxesCombined, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { X } from 'lucide-react';
 import Dashboard from '../../assets/svg/dashboard';
+import MyAccount from '../../assets/svg/myAccount';
+import Transfer from '../../assets/svg/transfer';
+import Statement from '../../assets/svg/statement';
+import Profile from '../../assets/svg/profile';
+import PayBills from '../../assets/svg/bills';
+import Mail from '../../assets/svg/mail';
 
 const Links = [
   { name: 'Dashboard', icon: Dashboard, path: '/dashboard' },
-  { name: 'Analysis', icon: <ChartNoAxesCombined />, path: '/analysis' },
+  { name: 'Account details', icon: MyAccount, path: '/my-account' },
+  {
+    name: 'Fund transfer',
+    icon: Transfer,
+    path: '/transfer',
+  },
+  { name: 'View statement', icon: Statement, path: '/statement' },
+  {
+    name: 'User settings',
+    icon: Profile,
+    path: '/profile',
+  },
+  {
+    name: 'Bill payments',
+    icon: PayBills,
+    path: '/pay-bills',
+  },
+  { name: 'Contact us', icon: Mail, path: '/' },
 ];
 
 const Sidebar = ({
@@ -17,6 +40,7 @@ const Sidebar = ({
 }) => {
   const location = useLocation();
   const active = location.pathname;
+  const navigate = useNavigate();
 
   // Prevent scrolling when sidebar is open
   useEffect(() => {
@@ -67,12 +91,15 @@ const Sidebar = ({
             <div
               key={index}
               className={`flex items-center gap-3 py-2 px-3 mb-4 text-sm font-medium cursor-pointer rounded-md 
-                ${
-                  active === item.path
-                    ? 'text-[#A74F5D] bg-[#F1EEF6]'
-                    : 'text-gray-600 hover:bg-[#F1EEF6]'
-                }`}
-              onClick={() => setIsOpen(false)}
+      ${
+        active === item.path
+          ? 'text-[#A74F5D] bg-[#F1EEF6]'
+          : 'text-gray-600 hover:bg-[#F1EEF6]'
+      }`}
+              onClick={() => {
+                navigate(item.path); // Navigate to the item's path
+                setIsOpen(false); // Close the sidebar
+              }}
             >
               {typeof item.icon === 'function' ? <item.icon /> : item.icon}
               <h2>{item.name}</h2>

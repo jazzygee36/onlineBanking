@@ -7,6 +7,11 @@ import FAQ from './pages/faq';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import Dashboard from './pages/dashboard';
+import MyAccount from './pages/myAccount';
+import Transfer from './pages/transfer';
+import Statement from './pages/statement';
+import Profile from './pages/profile';
+import PayBill from './pages/payBill';
 
 const App = () => {
   return (
@@ -21,6 +26,12 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<SignUp />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/my-account' element={<MyAccount />} />
+        <Route path='/transfer' element={<Transfer />} />
+        <Route path='/statement' element={<Statement />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/pay-bills' element={<PayBill />} />
+        {/* <Route path='/dashboard' element={<Dashboard />} /> */}
       </Routes>
     </BrowserRouter>
   );
