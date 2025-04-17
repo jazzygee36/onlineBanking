@@ -8,6 +8,7 @@ import HowItWork from './howItWork';
 import OurPlans from './ourPlans';
 import HomeServices from './services';
 import Footer from '../../components/footer';
+import ChatBox from '../../components/chatbox';
 
 const HomePage = () => {
   return (
@@ -24,6 +25,7 @@ const HomePage = () => {
       <OurPlans />
       <FAQ />
       <Footer />
+      <ChatBox />
     </div>
   );
 };

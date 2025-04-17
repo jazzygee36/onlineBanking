@@ -5,7 +5,7 @@ import MissionIcon from '../../assets/svg/mission';
 
 const AboutUs = () => {
   return (
-    <div className=' bg-[#d39b1612] h-full py-[40px] px-[5%] mt-[30px] md:mt-[80px] '>
+    <div className=' bg-[#d39b1612] h-full py-[40px] px-[5%] mt-[0px] '>
       <div className='flex flex-row items-center mb-8 justify-center gap-2'>
         <div className='w-6 h-[2px] bg-[#d39b16]'></div>
         <h4 className='text-center text-[20px]  text-[#d39b16] font-medium'>
