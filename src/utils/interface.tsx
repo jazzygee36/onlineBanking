@@ -30,8 +30,8 @@ export interface SelectProps {
   label?: string;
   option: { value: string; label: string }[];
   name: string;
-  value: string;
-  onChange: (
+  value?: string;
+  onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   border?: string;
