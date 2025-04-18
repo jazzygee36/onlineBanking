@@ -20,7 +20,7 @@ const Dashboard = () => {
   return (
     <MainDashboard title={'Dashbaord'}>
       <div className='flex flex-col items-center justify-center gap-8  h-full'>
-        <h4 className='font-semibold underline  text-gray-500 text-center'>
+        <h4 className='font-semibold underline  text-gray-500 text-center md:hidden sm:block'>
           Navigate with the icons below.
         </h4>
 

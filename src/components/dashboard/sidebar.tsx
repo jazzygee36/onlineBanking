@@ -64,7 +64,7 @@ const Sidebar = ({
 
       {/* Sidebar Container */}
       <div
-        className={`fixed lg:static top-0 left-0 h-full w-[70%] md:w-[50%] lg:w-[16.8%] bg-white shadow-md border-r border-[#EAEAEA] transition-transform duration-300 ease-in-out z-20
+        className={`fixed lg:static top-0 left-0 h-full w-[70%] md:w-[50%] lg:w-[16.8%] bg-white border-r border-[#EAEAEA] transition-transform duration-300 ease-in-out z-20
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
       >
         {/* Logo & Close Button */}

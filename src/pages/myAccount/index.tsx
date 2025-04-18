@@ -1,20 +1,29 @@
+import Bell from '../../assets/svg/bell';
+
+import Mail from '../../assets/svg/mail';
+import MyAccountIcon from '../../assets/svg/myAccount';
+import Transfer from '../../assets/svg/transfer';
 import MainDashboard from '../../components/dashboard';
 const Card = [
   {
     label: 'Messages',
     title: '0 New',
+    icon: <Mail />,
   },
   {
     label: '1 Account',
     title: 'Active',
+    icon: <MyAccountIcon />,
   },
   {
     label: 'Notifications',
     title: '0 New',
+    icon: <Bell />,
   },
   {
     label: 'Transactions',
     title: '0 Pending',
+    icon: <Transfer />,
   },
 ];
 const AccountSummary = [
@@ -33,10 +42,13 @@ const MyAccount = () => {
         {Card.map((item, index) => (
           <div
             key={index}
-            className='bg-white shadow-sm rounded-lg p-10 flex flex-col items-center justify-center'
+            className='flex items-center justify-center bg-white shadow-sm rounded-lg p-10 gap-3'
           >
-            <h2 className='text-md font-medium'>{item.label}</h2>
-            <p className='text-sm font-normal text-[#6c757d]'>{item.title}</p>
+            <div className='bg-[#f8f9fa]  rounded-lg'>{item.icon}</div>
+            <div className=' flex flex-col items-center justify-center'>
+              <h2 className='text-md font-medium'>{item.label}</h2>
+              <p className='text-sm font-normal text-[#6c757d]'>{item.title}</p>
+            </div>
           </div>
         ))}
       </div>
