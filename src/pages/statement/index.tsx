@@ -19,7 +19,7 @@ const AccountSummary = [
 const Statement = () => {
   return (
     <MainDashboard title={'Statement'}>
-      <h1 className='font-medium mt-6'>Transaction History</h1>
+      <h1 className='font-medium mt-6 md:hidden block'>Transaction History</h1>
       <div className='  p-4 my-4 flex items-center justify-between '>
         <div className='w-[50%]'>
           {' '}

@@ -8,7 +8,7 @@ const Transfer = () => {
 
   return (
     <MainDashboard title={'Transfer'}>
-      <h1 className='font-medium mt-6'>Funds Transfer</h1>
+      <h1 className='font-medium mt-6 md:hidden block'>Funds Transfer</h1>
 
       <div className='w-full bg-gray-200 p-4 my-4 flex items-center justify-between '>
         <div className='flex gap-4'>

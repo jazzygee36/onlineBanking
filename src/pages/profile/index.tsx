@@ -5,14 +5,14 @@ import HomeInput from '../../components/input';
 const Profile = () => {
   return (
     <MainDashboard title={'Profile'}>
-      <h1 className='font-medium mt-6'>Profile Settings</h1>
-      <div className='grid grid-cols-1 md:grid-cols-2 items-center  w-full '>
-        <div className=' p-2  flex items-center gap-1 md:gap-10 w-[100%]'>
+      <h1 className='font-medium my-6 md:hidden block'>Profile Settings</h1>
+      <div className='grid grid-cols-1 md:grid-cols-2 items-center gap-7 w-full '>
+        <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-full'>
             <HomeInput type={'text'} placeholder={''} label='Account number' />
           </div>
         </div>
-        <div className=' p-4  flex items-center gap-1 md:gap-10 w-[100%]'>
+        <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-full'>
             <HomeInput
               type={'text'}
@@ -22,21 +22,21 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 items-center  w-full'>
-        <div className=' p-4  flex items-center gap-1 md:gap-10 w-[100%] '>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-7 mt-7 items-center  w-full'>
+        <div className='   flex items-center gap-1 md:gap-10 w-[100%] '>
           <div className='w-[100%]'>
             <HomeInput type={'text'} placeholder={''} label='Change password' />
           </div>
         </div>
-        <div className=' p-4  flex items-center gap-1 md:gap-10 w-[100%]'>
+        <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-[100%]'>
             <HomeInput type={'text'} placeholder={''} label='Email address' />
           </div>
         </div>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 items-center  w-full'>
-        <div className=' p-4  flex items-center gap-1 md:gap-10 w-[100%] '>
+      <div className='grid grid-cols-1 md:grid-cols-2 items-center gap-7 my-7  w-full'>
+        <div className='  flex items-center gap-1 md:gap-10 w-[100%] '>
           <div className='w-[100%]'>
             <HomeInput
               type={'text'}
@@ -45,20 +45,20 @@ const Profile = () => {
             />
           </div>
         </div>
-        <div className=' p-4  flex items-center gap-1 md:gap-10 w-[100%]'>
+        <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-[100%]'>
-            <HomeInput type={'text'} placeholder={''} label='Date of Birth' />
+            <HomeInput type={'date'} placeholder={''} label='Date of Birth' />
           </div>
         </div>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 items-center  w-full '>
-        <div className=' p-4 mb-4 flex items-center gap-1 md:gap-10  w-[100%] '>
+      <div className='grid grid-cols-1 md:grid-cols-2 items-center gap-7  w-full '>
+        <div className='  mb-4 flex items-center gap-1 md:gap-10  w-[100%] '>
           <div className='w-[100%]'>
             <HomeInput type={'text'} placeholder={''} label='Occupation' />
           </div>
         </div>
-        <div className=' p-4 mb-4 flex items-center gap-1 md:gap-10  w-[100%]'>
+        <div className='  mb-4 flex items-center gap-1 md:gap-10  w-[100%]'>
           <div className='w-[100%]'>
             <HomeInput type={'text'} placeholder={''} label='Postal address' />
           </div>

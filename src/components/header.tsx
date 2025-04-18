@@ -31,7 +31,12 @@ const Header = () => {
         scrolled ? 'bg-[#3c1414]' : 'bg-[#7e501c8c]'
       }`}
     >
-      <div className='font-bold text-white text-xl'>Logo</div>
+      <div className='flex items-center  '>
+        <h1 className='text-3xl font-bold text-white  '>TS</h1>
+        <h1 className='text-md font-semibold bg-gradient-to-r from-[#d39b16] to-[#d39b16] bg-clip-text text-transparent'>
+          -Finance
+        </h1>
+      </div>
 
       {/* Desktop nav */}
       <nav className='hidden md:flex gap-6 text-white font-semibold uppercase'>

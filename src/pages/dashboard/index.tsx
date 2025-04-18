@@ -19,10 +19,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   return (
     <MainDashboard title={'Dashbaord'}>
+      <h1 className='font-medium my-6 md:hidden block'>Dashboard</h1>
+
       <div className='flex flex-col items-center justify-center gap-8  h-full'>
-        <h4 className='font-semibold underline  text-gray-500 text-center md:hidden sm:block'>
+        {/* <h4 className='font-semibold underline  text-gray-500 text-center md:hidden sm:block'>
           Navigate with the icons below.
-        </h4>
+        </h4> */}
 
         <div className='grid md:grid-cols-3 grid-cols-2 gap-16 '>
           {Board.map((board, index) => (
@@ -33,7 +35,7 @@ const Dashboard = () => {
                 navigate(board.path);
               }}
             >
-              <div className='rounded-full bg-white shadow-md p-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out'>
+              <div className='rounded-full bg-white shadow-sm shadow-amber-600 p-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out'>
                 {board.icon && <board.icon />}
               </div>
               <h1 className='text-center'>{board.title}</h1>

@@ -38,6 +38,8 @@ const AccountSummary = [
 const MyAccount = () => {
   return (
     <MainDashboard title={'My Account'}>
+      <h1 className='font-medium my-6 md:hidden block'>Account details</h1>
+
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4'>
         {Card.map((item, index) => (
           <div

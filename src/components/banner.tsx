@@ -6,7 +6,7 @@ import FirstBanner from '../assets/firstbanner.jpg';
 const slides = [
   {
     title: 'Welcome to the Largest E-banking System',
-    desc: 'Trust Ensure Finance is a safe, fast, easy, and efficient e-Banking system that enables you access to your bank account and to carry out online banking services, 24/7',
+    desc: 'Trust Success Finance is a safe, fast, easy, and efficient e-Banking system that enables you access to your bank account and to carry out online banking services, 24/7',
     bgImg: FirstBanner,
   },
   {

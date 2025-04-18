@@ -8,6 +8,7 @@ import Statement from '../../assets/svg/statement';
 import Profile from '../../assets/svg/profile';
 import PayBills from '../../assets/svg/bills';
 import Mail from '../../assets/svg/mail';
+import Logo from '../../assets/logo.jpg';
 
 const Links = [
   { name: 'Dashboard', icon: Dashboard, path: '/dashboard' },
@@ -69,13 +70,11 @@ const Sidebar = ({
       >
         {/* Logo & Close Button */}
         <div className='flex items-center justify-between p-4'>
-          <div className='flex items-center gap-2'>
-            <img
-              src='https://media.licdn.com/dms/image/v2/D4D0BAQHWyuSjzdBaJw/company-logo_200_200/company-logo_200_200/0/1725907617789/bepeerless_logo?e=2147483647&v=beta&t=tkrGCwYrLZ4xoHuQcY0kth9CbanyuDiC8rUtCRnn188'
-              alt='logo'
-              className='w-[40px] h-[40px]'
-            />
-            <h1 className='text-[#5534A5] text-lg font-semibold'>Finance</h1>
+          <div className='flex items-center '>
+            <img src={Logo} alt='logo' className='' width={25} />
+            <h1 className='text-md font-semibold bg-gradient-to-r from-[#d39b16] to-[#A74F5D] bg-clip-text text-transparent'>
+              -Finance
+            </h1>
           </div>
 
           {/* Close button for mobile */}
@@ -93,7 +92,7 @@ const Sidebar = ({
               className={`flex items-center gap-3 py-2 px-3 mb-4 text-sm font-medium cursor-pointer rounded-md 
       ${
         active === item.path
-          ? 'text-[#A74F5D] bg-[#F1EEF6]'
+          ? 'text-[#d39b16] bg-[#F1EEF6]'
           : 'text-gray-600 hover:bg-[#F1EEF6]'
       }`}
               onClick={() => {

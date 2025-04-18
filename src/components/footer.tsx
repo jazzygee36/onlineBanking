@@ -1,10 +1,17 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
   return (
     <div className='py-12 bg-[#3c1414] text-white'>
       <div className='max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10'>
         {/* Logo + Description */}
         <div>
-          <h2 className='text-2xl font-bold text-[#d39b16]'>Logo</h2>
+          <div className='flex items-center  '>
+            <h1 className='text-3xl font-bold text-white  '>TS</h1>
+            <h1 className='text-md font-semibold bg-gradient-to-r from-[#d39b16] to-[#d39b16] bg-clip-text text-transparent'>
+              -Finance
+            </h1>
+          </div>
           <p className='mt-4 text-sm text-gray-300'>
             We provide flexible and affordable loan plans tailored to your
             needs. Trust us to support your financial goals with transparency
@@ -24,19 +31,23 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='#' className='hover:text-[#d39b16] transition-colors'>
-                About Us
-              </a>
+              <Link to='/about'>
+                <a className='hover:text-[#d39b16] transition-colors'>
+                  About Us
+                </a>
+              </Link>
             </li>
             <li>
-              <a href='#' className='hover:text-[#d39b16] transition-colors'>
-                Loan Plans
-              </a>
+              <Link to='/'>
+                <a className='hover:text-[#d39b16] transition-colors'>
+                  Our Services
+                </a>
+              </Link>
             </li>
             <li>
-              <a href='#' className='hover:text-[#d39b16] transition-colors'>
-                FAQ
-              </a>
+              <Link to='/faq'>
+                <a className='hover:text-[#d39b16] transition-colors'>FAQ</a>
+              </Link>
             </li>
             <li>
               <a href='#' className='hover:text-[#d39b16] transition-colors'>
