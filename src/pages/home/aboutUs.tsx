@@ -21,7 +21,7 @@ const AboutUs = () => {
             We care about your money and safety.
           </h2>
           <div className='flex items-center gap-5 md:gap-8'>
-            <div className='p-2 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
+            <div className=' p-1 md:p-2 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
               <MissionIcon />
             </div>
             <div>
@@ -37,7 +37,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className='my-4 flex items-center gap-5 md:gap-8'>
-            <div className='h-16 w-24 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
+            <div className=' p-1 md:p-2 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
               <EyeIcon />
             </div>
             <div>
@@ -52,7 +52,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className='flex items-center gap-5 md:gap-8'>
-            <div className='p-2 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
+            <div className=' p-1 md:p-2 rounded-lg bg-[#d39b16] flex items-center justify-center text-white'>
               <GoalIcon />
             </div>
             <div>
