@@ -25,13 +25,14 @@ const AboutUs = () => {
               <MissionIcon />
             </div>
             <div>
-              <h3 className='text-[#373E4A]  font-semibold text-[20px] md:text-[24px] group-hover:text-white transition-colors duration-300'>
+              <h3 className='text-[#373E4A]  font-semibold text-[18px] md:text-[22px] group-hover:text-white transition-colors duration-300'>
                 Our Mission
               </h3>
 
-              <p className='text-gray-600 text-[16px] md:text-[18px] w-full md:w-[80%] group-hover:text-white mt-2 transition-colors duration-300'>
-                We are focused on building and sustaining long-term generational
-                relationships with our customers.
+              <p className='text-gray-600 text-[18px] md:text-[16px] w-full md:w-[85%] group-hover:text-white mt-2 transition-colors duration-300'>
+                To provide secure, accessible, and innovative digital banking
+                solutions that empower individuals and businesses to manage
+                their finances with confidence and ease.
               </p>
             </div>
           </div>
@@ -40,12 +41,13 @@ const AboutUs = () => {
               <EyeIcon />
             </div>
             <div>
-              <h3 className='text-[#373E4A]  font-semibold text-[20px] md:text-[24px] group-hover:text-white transition-colors duration-300'>
+              <h3 className='text-[#373E4A]  font-semibold text-[18px] md:text-[22px] group-hover:text-white transition-colors duration-300'>
                 Our Vision
               </h3>
-              <p className='text-gray-600 text-[16px] md:text-[18px] w-full md:w-[80%] group-hover:text-white mt-2 transition-colors duration-300'>
-                Trust Ensure Finance will serve all over the world and becomes
-                the most popular Bank in this universe.
+              <p className='text-gray-600 text-[18px] md:text-[16px] w-full md:w-[85%] group-hover:text-white mt-2 transition-colors duration-300'>
+                To become the most trusted and customer-centric online bank,
+                setting the standard for financial innovation, transparency, and
+                digital convenience across the globe.
               </p>
             </div>
           </div>
@@ -54,13 +56,15 @@ const AboutUs = () => {
               <GoalIcon />
             </div>
             <div>
-              <h3 className='text-[#373E4A]  font-semibold text-[20px] md:text-[24px] group-hover:text-white transition-colors duration-300'>
+              <h3 className='text-[#373E4A]  font-semibold text-[18px] md:text-[22px] group-hover:text-white transition-colors duration-300'>
                 Our Goal
               </h3>
 
-              <p className='text-gray-600 text-[16px] md:text-[18px] w-full md:w-[90%] group-hover:text-white mt-2 transition-colors duration-300'>
-                Trust Ensure Finance will serve their customers from all over
-                the world and becomes the popular bank in this universe.
+              <p className='text-gray-600 text-[18px] md:text-[16px] w-full md:w-[85%] group-hover:text-white mt-2 transition-colors duration-300'>
+                Deliver seamless and personalized digital banking experiences.{' '}
+                <br />
+                Maintain top-tier security protocols to protect customer data
+                and transactions.
               </p>
             </div>
           </div>

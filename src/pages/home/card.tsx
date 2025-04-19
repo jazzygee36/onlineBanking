@@ -13,25 +13,25 @@ const CardDetails = [
   {
     title: 'Online Payment',
     description:
-      'We have online payment services like PayPal, Stripe, Paystack, Skrill, Flutterwave, Mollie, Payeer, RazorPay, etc.',
+      'Make fast, secure payments anytime, anywhere with trusted gateways like PayPal, Stripe, Paystack, and more.',
     icon: BadgeDollarSign,
   },
   {
     title: 'Take Loan',
     description:
-      'We have several plans to apply for a loan. You may apply to our loan plans by submitting some of your valid information.',
+      'Get quick and easy access to personal or business loans with flexible repayment plans and low interest rates.',
     icon: Blend,
   },
   {
     title: 'Deposit Schemes',
     description:
-      'We have two deposit schemes for you, one is Deposit Pension Scheme and another one is the Fixed Deposit Receipt.',
+      'Grow your savings with our flexible and rewarding deposit schemes. Choose from a variety of plans.',
     icon: BanknoteArrowUp,
   },
   {
     title: 'Transfer Money',
     description:
-      'You are able to transfer your funds within the Trust Ensure Finance or other banks we support by adding your beneficiaries.',
+      'Send money instantly and securely—anytime, anywhere. Whether it’s to family, friends, or business partners.',
     icon: Rotate3d,
   },
 ];

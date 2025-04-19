@@ -7,18 +7,18 @@ const CardDetails = [
   {
     title: 'Fast Transfer',
     description:
-      'Our Money transfer system is secure and easy. Send your funds to your beneficiaries within Trust Ensure Finance or to other banks. Transfer within Trust Ensure Finance is instant and to other banks may take 24 hours.',
+      'Transfer funds instantly—locally or internationally. Send money to mobile numbers or bank accounts with ease, low fees, and zero delays.',
     image: FastTransfer,
   },
   {
     title: 'Deposit Funds',
     description:
-      'Account-holders of Trust Ensure Finance are able to deposit their money through our several payment systems. We have online payment services like PayPal, Stripe, Paystack, Skrill, Flutterwave, Mollie, Payeer, etc.',
+      'Easily add money to your online banking account with multiple deposit options tailored for your convenience. ',
     image: Deposite,
   },
   {
     title: 'Withdraw Funds',
-    description: `Account-holders of Trust Ensure Finance are able to withdraw money from their account. Without verification, any withdrawal won't be completed, so you can trust Trust Ensure Finance.`,
+    description: `Easily transfer your money from your online banking account to your preferred destination. Our platform ensures fast and secure.`,
     image: Withdraw,
   },
 ];

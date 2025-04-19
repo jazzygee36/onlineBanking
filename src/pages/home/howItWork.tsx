@@ -36,7 +36,7 @@ const HowItWork = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6'>
         {CardDetails.map((card, index) => (
           <div key={index} className='mx-[5%]  text-center mt-10'>
-            <div className='bg-[#3c1414] border-4 border-[#d39b16]  rounded-full  w-24 h-24 text-white flex items-center justify-center m-auto text-[36px] font-semibold'>
+            <div className='bg-[#3c1414] border-4 border-[#d39b16]  rounded-full w-20 h-20  md:w-24 md:h-24 text-white flex items-center justify-center m-auto text-[36px] font-semibold'>
               {card.id}
             </div>
             <div className='   rounded-md  p-8  flex flex-col items-center justify-center relative overflow-hidden'>

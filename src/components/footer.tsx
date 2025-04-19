@@ -13,9 +13,9 @@ const Footer = () => {
             </h1>
           </div>
           <p className='mt-4 text-sm text-gray-300'>
-            We provide flexible and affordable loan plans tailored to your
-            needs. Trust us to support your financial goals with transparency
-            and speed.
+            Trust Success Finance provide flexible and affordable loan plans
+            tailored to your needs. Trust us to support your financial goals
+            with transparency and speed.
           </p>
         </div>
 
@@ -26,33 +26,29 @@ const Footer = () => {
           </h3>
           <ul className='space-y-2 text-sm text-gray-300'>
             <li>
-              <a href='#' className='hover:text-[#d39b16] transition-colors'>
-                Home
-              </a>
+              <p className='hover:text-[#d39b16] transition-colors'>Home</p>
             </li>
             <li>
               <Link to='/about'>
-                <a className='hover:text-[#d39b16] transition-colors'>
+                <p className='hover:text-[#d39b16] transition-colors'>
                   About Us
-                </a>
+                </p>
               </Link>
             </li>
             <li>
-              <Link to='/'>
-                <a className='hover:text-[#d39b16] transition-colors'>
+              <Link to='/services'>
+                <p className='hover:text-[#d39b16] transition-colors'>
                   Our Services
-                </a>
+                </p>
               </Link>
             </li>
             <li>
               <Link to='/faq'>
-                <a className='hover:text-[#d39b16] transition-colors'>FAQ</a>
+                <p className='hover:text-[#d39b16] transition-colors'>FAQ</p>
               </Link>
             </li>
             <li>
-              <a href='#' className='hover:text-[#d39b16] transition-colors'>
-                Contact
-              </a>
+              <p className='hover:text-[#d39b16] transition-colors'>Contact</p>
             </li>
           </ul>
         </div>
@@ -63,7 +59,7 @@ const Footer = () => {
             Contact Us
           </h3>
           <ul className='space-y-2 text-sm text-gray-300'>
-            <li>Email: support@loanpro.com</li>
+            <li>Email: trustsuccessfinance.com</li>
             <li>Phone: +1 (800) 123-4567</li>
             <li>Address: 123 Finance Street, NY 10001</li>
           </ul>
@@ -75,7 +71,7 @@ const Footer = () => {
 
       {/* Bottom Note */}
       <div className='text-center text-sm text-gray-400'>
-        © {new Date().getFullYear()} LoanPro. All rights reserved.
+        © {new Date().getFullYear()} Trust Success Finance. All rights reserved.
       </div>
     </div>
   );

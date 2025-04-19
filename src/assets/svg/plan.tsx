@@ -50,8 +50,8 @@ const PlanIcon = ({ className }: Props) => {
           y2='40'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='white' />
-          <stop offset='1' stop-color='#CDCDCD' />
+          <stop stopColor='white' />
+          <stop offset='1' stopColor='#CDCDCD' />
         </linearGradient>
         <linearGradient
           id='paint1_linear_1_119'
@@ -61,8 +61,8 @@ const PlanIcon = ({ className }: Props) => {
           y2='40'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-opacity='0' />
-          <stop offset='1' stop-opacity='0.24' />
+          <stop stopOpacity='0' />
+          <stop offset='1' stopOpacity='0.24' />
         </linearGradient>
       </defs>
     </svg>
