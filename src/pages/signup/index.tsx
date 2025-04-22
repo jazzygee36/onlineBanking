@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import ErrorMessage from '../../components/errorMessage';
 import ProgressBar from '../../components/progressBar';
 import CompleteRegistration from './completeRegistration';
 import IndividualForm from './individual.form';
@@ -12,7 +11,7 @@ const SignUp = () => {
   const [formHeader, setFormHeader] = useState(false);
   const [progress, setProgress] = useState(1);
   const [step, setStep] = useState(1);
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [, setApiError] = useState<string | null>(null);
 
   const nextStep = () => {
     setStep((prev) => prev + 1);
@@ -43,14 +42,14 @@ const SignUp = () => {
         />
       </div>
 
-      {apiError && (
+      {/* {apiError && (
         <ErrorMessage
           title={apiError}
           onClose={() => {
             setApiError(null);
           }}
         />
-      )}
+      )} */}
       <div className='w-[95%] md:w-[555px] bg-white p-3 md:p-12 rounded-md text-[#1E1E1E]'>
         {!completeRegistration ? (
           <>

@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import HomeInput from '../../components/input';
 import HomeButton from '../../components/button';
-import ErrorMessage from '../../components/errorMessage';
+import Toast from '../../components/toast';
 
 type FormData = z.infer<typeof signInSchema>;
 
@@ -21,7 +21,13 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type?: 'success' | 'error' | 'info';
+  } | null>(null);
+  const showToast = (message: string, type?: 'success' | 'error' | 'info') => {
+    setToast({ message, type });
+  };
   const [loading, setLoading] = useState<boolean>(false); // Added loading state
 
   const handleChange = (
@@ -36,7 +42,7 @@ const Login = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setApiError(null);
+    // setApiError(null);
     setLoading(true); // Start loading
 
     const result = signInSchema.safeParse(formData);
@@ -52,21 +58,34 @@ const Login = () => {
 
     try {
       const { email, password } = formData;
-      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, {
-        email,
-        password,
-      });
-
-      if (res.data.message === 'Login successfully') {
-        localStorage.setItem('token', res.data.token);
-        navigate('/market');
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/login`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+        // { withCredentials: true }
+      );
+      if (res.data.message === 'Login successful') {
+        showToast(`${res.data.message}`, 'success');
+        setTimeout(() => navigate('/dashboard'), 1000);
+      } else if (res.data.message === 'Invalid credentials') {
+        showToast('Not a user, please register', 'error'); // maybe this should be 'error'?
       } else {
-        setApiError('Login failed. Please try again.');
+        showToast(res?.data?.message || 'Unexpected response', 'info');
       }
     } catch (error: any) {
-      setApiError(
+      console.error('Login error:', error);
+      showToast(
         error.response?.data?.message ||
-          'Something went wrong. Please try again.'
+          'Something went wrong. Please try again.',
+        'error'
       );
     } finally {
       setLoading(false); // Stop loading after API response
@@ -87,15 +106,6 @@ const Login = () => {
             className='w-full'
           />
         </div>
-
-        {apiError && (
-          <ErrorMessage
-            title={apiError}
-            onClose={() => {
-              setApiError(null);
-            }}
-          />
-        )}
 
         <div className='w-[95%] md:w-[555px] m-auto bg-white p-5 md:p-11 rounded-md text-[#1E1E1E] flex flex-col items-center'>
           <div className='mb-[40px]'>
@@ -159,11 +169,11 @@ const Login = () => {
             </div>
             <div className='w-full'>
               <HomeButton
-                title={loading ? 'Signing in...' : 'Sign in'}
+                title={loading ? 'Loading...' : 'Login'}
                 type='submit'
                 bg={'#3c1414'}
                 color={'#ffffff'}
-                // disabled={loading}
+                disabled={loading}
                 width={'100%'}
               />
             </div>
@@ -186,7 +196,13 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      {/* <ChatBoxContainer /> */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </>
   );
 };

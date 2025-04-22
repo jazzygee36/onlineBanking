@@ -14,6 +14,11 @@ import Profile from './pages/profile';
 import PayBill from './pages/payBill';
 
 const App = () => {
+  // PrivateRoute component
+  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    const isAuthenticated = !!localStorage.getItem('token');
+    return isAuthenticated ? <>{children}</> : (window.location.href = '/');
+  };
   return (
     <BrowserRouter>
       <Routes>
@@ -25,12 +30,55 @@ const App = () => {
         <Route path='/faq' element={<FAQ />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<SignUp />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/my-account' element={<MyAccount />} />
-        <Route path='/transfer' element={<Transfer />} />
-        <Route path='/statement' element={<Statement />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/pay-bills' element={<PayBill />} />
+        {/* PROTECTED ROUTES */}
+        <Route
+          path='/dashboard'
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/my-account'
+          element={
+            <PrivateRoute>
+              <MyAccount />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/transfer'
+          element={
+            <PrivateRoute>
+              <Transfer />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/statement'
+          element={
+            <PrivateRoute>
+              <Statement />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/pay-bills'
+          element={
+            <PrivateRoute>
+              <PayBill />
+            </PrivateRoute>
+          }
+        />
         {/* <Route path='/dashboard' element={<Dashboard />} /> */}
       </Routes>
     </BrowserRouter>

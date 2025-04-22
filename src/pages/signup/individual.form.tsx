@@ -13,6 +13,9 @@ import { IndividualFormProps } from '../../utils/interface';
 import HomeInput from '../../components/input';
 import SelectInput from '../../components/selectInput';
 import HomeButton from '../../components/button';
+import axios from 'axios';
+import Toast from '../../components/toast';
+import { useNavigate } from 'react-router-dom';
 
 interface ValidationErrors {
   firstName?: { _errors: string[] };
@@ -64,7 +67,16 @@ const IndividualForm: FC<IndividualFormProps> = ({
     acctType: '',
     acctPin: '',
   });
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [toast, setToast] = useState<{
+    message: string;
+    type?: 'success' | 'error' | 'info';
+  } | null>(null);
+  const showToast = (message: string, type?: 'success' | 'error' | 'info') => {
+    setToast({ message, type });
+  };
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -151,7 +163,60 @@ const IndividualForm: FC<IndividualFormProps> = ({
       return; // Do not finish registration if validation fails
     }
     try {
-      setLoading(true);
+      const {
+        zipCode,
+        address,
+        firstName,
+        lastName,
+        username,
+        email,
+        occupation,
+        gender,
+        dob,
+        phoneNumber,
+        country,
+        state,
+        city,
+        acctType,
+        acctPin,
+        password,
+      } = formData;
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/register`,
+        {
+          zipCode,
+          address,
+          firstName,
+          lastName,
+          username,
+          email,
+          occupation,
+          gender,
+          dob,
+          phoneNumber,
+          country,
+          state,
+          city,
+          acctType,
+          acctPin,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+        // { withCredentials: true }
+      );
+      if (res.data.message === 'Successfully registered') {
+        showToast(`${res.data.message}`, 'success');
+        setTimeout(() => navigate('/dashboard'), 1000);
+      } else if (res.data.message === 'Invalid credentials') {
+        showToast('Not a user, please register', 'error'); // maybe this should be 'error'?
+      } else {
+        showToast(res?.data?.message || 'Unexpected response', 'info');
+      }
 
       setCompleteRegistration(true);
     } catch (error: any) {
@@ -165,419 +230,440 @@ const IndividualForm: FC<IndividualFormProps> = ({
   };
 
   return (
-    <div>
-      {step === 1 && (
-        <>
-          <div className='flex items-center gap-5'>
-            <div>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your First Name'}
-                label='Your First Name'
-                name='firstName'
-                value={formData.firstName}
-                onChange={handleChange}
-                border={
-                  errors.firstName ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.firstName && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.firstName}
-                </p>
-              )}
-            </div>
-            <div>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Last Name'}
-                label='Your Last Name'
-                name='lastName'
-                value={formData.lastName}
-                onChange={handleChange}
-                border={
-                  errors.lastName ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.lastName && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.lastName}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className='mt-5 flex items-center gap-5 w-full'>
-            <div className='w-[50%]'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Username'}
-                label='Your Username'
-                name='username'
-                value={formData.username}
-                onChange={handleChange}
-                border={
-                  errors.username ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.username && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.username}
-                </p>
-              )}
-            </div>
-            <div className='w-[50%]'>
-              <SelectInput
-                label='Select your Gender'
-                option={[
-                  { value: '', label: 'Select gender' },
-                  { value: 'Male', label: 'Male' },
-                  { value: 'Female', label: 'Female' },
-                ]}
-                name={'gender'}
-                value={formData.gender}
-                onChange={handleChange}
-                border={errors.gender ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-              />
-              {errors.gender && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.gender}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className='mt-5 flex items-center gap-5 w-full'>
-            <div className='w-[50%]'>
-              <HomeInput
-                type={'date'}
-                placeholder={'Select your Date of Birth'}
-                label='Your Date of Birth'
-                name='dob'
-                value={formData.dob}
-                onChange={handleChange}
-                border={errors.dob ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-              />
-              {errors.dob && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.dob}
-                </p>
-              )}
-            </div>
-            <div className='w-[50%]'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Occupation'}
-                label='Your Occupation'
-                name='occupation'
-                value={formData.occupation}
-                onChange={handleChange}
-                border={
-                  errors.occupation ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.occupation && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.occupation}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className='mt-5 w-full'>
-            <HomeInput
-              type={'email'}
-              placeholder={'Enter your Email'}
-              label='Your Email'
-              name='email'
-              value={formData.email}
-              onChange={handleChange}
-              border={errors.email ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-            />
-            {errors.email && (
-              <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.email}
-              </p>
-            )}
-          </div>
-        </>
-      )}
-
-      {step === 2 && (
-        <>
-          <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
-            Contact Information
-          </div>
-          <div className='my-5  items-center gap-5 w-full'>
-            <div className=''>
-              <SelectInput
-                label='Select your Country'
-                option={[
-                  { value: '', label: 'Select country' },
-                  { value: 'United States', label: 'United States' },
-                  { value: 'Canada', label: 'Canada' },
-                  { value: 'Nigeria', label: 'Nigeria' },
-                  { value: 'India', label: 'India' },
-                ]}
-                name={'country'}
-                value={formData.country}
-                onChange={handleChange}
-                border={
-                  errors.country ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.country && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.country}
-                </p>
-              )}
-            </div>
-            <div className='mt-5'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your State'}
-                label='Enter your State'
-                name='state'
-                value={formData.state}
-                onChange={handleChange}
-                border={errors.state ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-              />
-              {errors.state && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.state}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className='my-5 flex items-center gap-5 w-full'>
-            <div className='w-[50%]'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your City'}
-                label='Enter your City'
-                name='city'
-                value={formData.city}
-                onChange={handleChange}
-                border={errors.city ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-              />
-              {errors.city && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.city}
-                </p>
-              )}
-            </div>
-            <div className='w-[50%]'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Zip Code'}
-                label='Enter your Zip Code'
-                name='zipCode'
-                value={formData.zipCode}
-                onChange={handleChange}
-                border={
-                  errors.zipCode ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.zipCode && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.zipCode}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className='my-5  items-center gap-5 w-full'>
-            <div className=''>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Address'}
-                label='Enter your Address'
-                name='address'
-                value={formData.address}
-                onChange={handleChange}
-                border={
-                  errors.address ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.address && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.address}
-                </p>
-              )}
-            </div>
-            <div className='mt-5'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Phone Number'}
-                label='Enter your Phone number'
-                name='phoneNumber'
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                border={
-                  errors.phoneNumber ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (!/[0-9 +]/.test(event.key)) {
-                    event.preventDefault();
+    <>
+      <div>
+        {step === 1 && (
+          <>
+            <div className='flex items-center gap-5'>
+              <div>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your First Name'}
+                  label='Your First Name'
+                  name='firstName'
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  border={
+                    errors.firstName ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
                   }
-                }}
-              />
-              {errors.phoneNumber && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.phoneNumber}
-                </p>
-              )}
-            </div>
-          </div>
-        </>
-      )}
-      {step === 3 && (
-        <>
-          <div className='bg-[#3c1414] w-full py-2 mt-5 mb-5 text-white text-center  font-roboto text-[14px] font-medium'>
-            <h2>Bank Account Information.</h2>
-            <span className='text-1 text-gray-400 font-roboto text-center'>
-              Your information is secure with us.
-            </span>
-          </div>
-
-          <div className='my-5  gap-5 w-full'>
-            <div className=''>
-              <SelectInput
-                label='Select Account Type'
-                option={[
-                  { value: '', label: 'select country' },
-                  { value: 'current', label: 'Current Account' },
-                  { value: 'saving', label: 'Savings Account' },
-                  { value: 'fixed', label: 'Fixed deposite Account' },
-                  { value: 'swift', label: 'Swift Account' },
-                  { value: 'premium-swift', label: 'Premium Swift Account' },
-
-                  { value: 'Prefer not to say', label: 'Prefer not to say' },
-                ]}
-                name={'acctType'}
-                value={formData.acctType}
-                onChange={handleChange}
-                border={
-                  errors.acctType ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-              />
-              {errors.acctType && (
-                <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.acctType}
-                </p>
-              )}
-            </div>
-            <div className='mt-5'>
-              <HomeInput
-                type={'text'}
-                placeholder={'Enter your Pin'}
-                label='Enter Account Pin'
-                name='acctPin'
-                value={formData.acctPin}
-                onChange={handleChange}
-                border={
-                  errors.acctPin ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-                }
-                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (!/[0-9 +]/.test(event.key)) {
-                    event.preventDefault();
+                />
+                {errors.firstName && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.firstName}
+                  </p>
+                )}
+              </div>
+              <div>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Last Name'}
+                  label='Your Last Name'
+                  name='lastName'
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  border={
+                    errors.lastName ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
                   }
-                }}
+                />
+                {errors.lastName && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.lastName}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className='mt-5 flex items-center gap-5 w-full'>
+              <div className='w-[50%]'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Username'}
+                  label='Your Username'
+                  name='username'
+                  value={formData.username}
+                  onChange={handleChange}
+                  border={
+                    errors.username ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.username && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.username}
+                  </p>
+                )}
+              </div>
+              <div className='w-[50%]'>
+                <SelectInput
+                  label='Select your Gender'
+                  option={[
+                    { value: '', label: 'Select gender' },
+                    { value: 'Male', label: 'Male' },
+                    { value: 'Female', label: 'Female' },
+                  ]}
+                  name={'gender'}
+                  value={formData.gender}
+                  onChange={handleChange}
+                  border={
+                    errors.gender ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.gender && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.gender}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className='mt-5 flex items-center gap-5 w-full'>
+              <div className='w-[50%]'>
+                <HomeInput
+                  type={'date'}
+                  placeholder={'Select your Date of Birth'}
+                  label='Your Date of Birth'
+                  name='dob'
+                  value={formData.dob}
+                  onChange={handleChange}
+                  border={errors.dob ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+                />
+                {errors.dob && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.dob}
+                  </p>
+                )}
+              </div>
+              <div className='w-[50%]'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Occupation'}
+                  label='Your Occupation'
+                  name='occupation'
+                  value={formData.occupation}
+                  onChange={handleChange}
+                  border={
+                    errors.occupation ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.occupation && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.occupation}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className='mt-5 w-full'>
+              <HomeInput
+                type={'email'}
+                placeholder={'Enter your Email'}
+                label='Your Email'
+                name='email'
+                value={formData.email}
+                onChange={handleChange}
+                border={errors.email ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
               />
-              {errors.acctPin && (
+              {errors.email && (
                 <p className='text-[#EF4444] text-[10px] font-medium'>
-                  {errors.acctPin}
+                  {errors.email}
                 </p>
               )}
             </div>
-          </div>
-        </>
-      )}
-      {step === 4 && (
-        <>
-          <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
-            Create Password
-          </div>
-          <div className='my-5 flex items-center gap-5'>
-            <HomeInput
-              type={'password'}
-              placeholder={'Enter your Password'}
-              label='Password'
-              name='password'
-              value={formData.password}
-              onChange={handleChange}
-              border={errors.password ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
-            />
-            {errors.password && (
-              <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.password}
-              </p>
-            )}
-          </div>
-          <div className=''>
-            <HomeInput
-              type={'password'}
-              placeholder={'Confirm Password'}
-              label='Confirm Password'
-              name='confirmPassword'
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              border={
-                errors.confirmPassword ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
-              }
-            />
-            {errors.confirmPassword && (
-              <p className='text-[#EF4444] text-[10px] font-medium'>
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      <div className='flex justify-between items-center mt-6 w-full'>
-        {step < 4 && (
-          <div className='flex items-center justify-between w-[100%]'>
-            <HomeButton
-              title={step === 1 ? '' : 'BACK'}
-              bg=''
-              onClick={handleBack}
-              color={'#3c1414'}
-              disabled={loading}
-              type={'submit'}
-              width={''}
-            />
+        {step === 2 && (
+          <>
+            <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
+              Contact Information
+            </div>
+            <div className='my-5  items-center gap-5 w-full'>
+              <div className=''>
+                <SelectInput
+                  label='Select your Country'
+                  option={[
+                    { value: '', label: 'Select country' },
+                    { value: 'United States', label: 'United States' },
+                    { value: 'Canada', label: 'Canada' },
+                    { value: 'Nigeria', label: 'Nigeria' },
+                    { value: 'India', label: 'India' },
+                  ]}
+                  name={'country'}
+                  value={formData.country}
+                  onChange={handleChange}
+                  border={
+                    errors.country ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.country && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.country}
+                  </p>
+                )}
+              </div>
+              <div className='mt-5'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your State'}
+                  label='Enter your State'
+                  name='state'
+                  value={formData.state}
+                  onChange={handleChange}
+                  border={
+                    errors.state ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.state && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.state}
+                  </p>
+                )}
+              </div>
+            </div>
 
-            <HomeButton
-              title={step < 4 ? 'NEXT STEP' : 'VERIFY ACCOUNT'}
-              bg=''
-              onClick={handleNextStep}
-              color={'#D71E0E'}
-              disabled={loading}
-              type={'submit'}
-              width={''}
-            />
-          </div>
+            <div className='my-5 flex items-center gap-5 w-full'>
+              <div className='w-[50%]'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your City'}
+                  label='Enter your City'
+                  name='city'
+                  value={formData.city}
+                  onChange={handleChange}
+                  border={errors.city ? 'border-[#EF4444]' : 'border-[#E8ECEF]'}
+                />
+                {errors.city && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.city}
+                  </p>
+                )}
+              </div>
+              <div className='w-[50%]'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Zip Code'}
+                  label='Enter your Zip Code'
+                  name='zipCode'
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                  border={
+                    errors.zipCode ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.zipCode && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.zipCode}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className='my-5  items-center gap-5 w-full'>
+              <div className=''>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Address'}
+                  label='Enter your Address'
+                  name='address'
+                  value={formData.address}
+                  onChange={handleChange}
+                  border={
+                    errors.address ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.address && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.address}
+                  </p>
+                )}
+              </div>
+              <div className='mt-5'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Phone Number'}
+                  label='Enter your Phone number'
+                  name='phoneNumber'
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  border={
+                    errors.phoneNumber ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                  onKeyPress={(
+                    event: React.KeyboardEvent<HTMLInputElement>
+                  ) => {
+                    if (!/[0-9 +]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                />
+                {errors.phoneNumber && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.phoneNumber}
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+        {step === 3 && (
+          <>
+            <div className='bg-[#3c1414] w-full py-2 mt-5 mb-5 text-white text-center  font-roboto text-[14px] font-medium'>
+              <h2>Bank Account Information.</h2>
+              <span className='text-1 text-gray-400 font-roboto text-center'>
+                Your information is secure with us.
+              </span>
+            </div>
+
+            <div className='my-5  gap-5 w-full'>
+              <div className=''>
+                <SelectInput
+                  label='Select Account Type'
+                  option={[
+                    { value: '', label: 'select country' },
+                    { value: 'current', label: 'Current Account' },
+                    { value: 'saving', label: 'Savings Account' },
+                    { value: 'fixed', label: 'Fixed deposite Account' },
+                    { value: 'swift', label: 'Swift Account' },
+                    { value: 'premium-swift', label: 'Premium Swift Account' },
+
+                    { value: 'Prefer not to say', label: 'Prefer not to say' },
+                  ]}
+                  name={'acctType'}
+                  value={formData.acctType}
+                  onChange={handleChange}
+                  border={
+                    errors.acctType ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                />
+                {errors.acctType && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.acctType}
+                  </p>
+                )}
+              </div>
+              <div className='mt-5'>
+                <HomeInput
+                  type={'text'}
+                  placeholder={'Enter your Pin'}
+                  label='Enter Account Pin'
+                  name='acctPin'
+                  value={formData.acctPin}
+                  onChange={handleChange}
+                  border={
+                    errors.acctPin ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                  }
+                  onKeyPress={(
+                    event: React.KeyboardEvent<HTMLInputElement>
+                  ) => {
+                    if (!/[0-9 +]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                />
+                {errors.acctPin && (
+                  <p className='text-[#EF4444] text-[10px] font-medium'>
+                    {errors.acctPin}
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
         )}
         {step === 4 && (
-          <div className='flex items-center justify-between w-full '>
-            <h2
-              onClick={() => {
-                setFormHeader(false);
-                prevStep();
-              }}
-              className=' text-[14px] font-medium cursor-pointer'
-            >
-              BACK
-            </h2>
-            <h2
-              onClick={handleFinishRegistration}
-              className='text-[#D71E0E] text-[14px] font-medium cursor-pointer'
-            >
-              FINISH
-            </h2>
-          </div>
+          <>
+            <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
+              Create Password
+            </div>
+            <div className='my-5 flex items-center gap-5'>
+              <HomeInput
+                type={'password'}
+                placeholder={'Enter your Password'}
+                label='Password'
+                name='password'
+                value={formData.password}
+                onChange={handleChange}
+                border={
+                  errors.password ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.password && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.password}
+                </p>
+              )}
+            </div>
+            <div className=''>
+              <HomeInput
+                type={'password'}
+                placeholder={'Confirm Password'}
+                label='Confirm Password'
+                name='confirmPassword'
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                border={
+                  errors.confirmPassword
+                    ? 'border-[#EF4444]'
+                    : 'border-[#E8ECEF]'
+                }
+              />
+              {errors.confirmPassword && (
+                <p className='text-[#EF4444] text-[10px] font-medium'>
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+          </>
         )}
+
+        <div className='flex justify-between items-center mt-6 w-full'>
+          {step < 4 && (
+            <div className='flex items-center justify-between w-[100%]'>
+              <HomeButton
+                title={step === 1 ? '' : 'BACK'}
+                bg=''
+                onClick={handleBack}
+                color={'#3c1414'}
+                disabled={loading}
+                type={'submit'}
+                width={''}
+              />
+
+              <HomeButton
+                title={step < 4 ? 'NEXT STEP' : 'VERIFY ACCOUNT'}
+                bg=''
+                onClick={handleNextStep}
+                color={'#D71E0E'}
+                disabled={loading}
+                type={'submit'}
+                width={''}
+              />
+            </div>
+          )}
+          {step === 4 && (
+            <div className='flex items-center justify-between w-full '>
+              <h2
+                onClick={() => {
+                  setFormHeader(false);
+                  prevStep();
+                }}
+                className=' text-[14px] font-medium cursor-pointer'
+              >
+                BACK
+              </h2>
+              <h2
+                onClick={handleFinishRegistration}
+                className='text-[#D71E0E] text-[14px] font-medium cursor-pointer'
+              >
+                FINISH
+              </h2>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+    </>
   );
 };
 

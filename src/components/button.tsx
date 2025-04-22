@@ -7,10 +7,12 @@ const HomeButton = ({
   bg,
   width,
   color,
+  disabled,
 }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       type={type}
       style={{ backgroundColor: bg, width: width, color: color }}
       className={`py-[12px] px-[30px] text-white   border-none  rounded-md cursor-pointer flex items-center justify-center text-[14px] font-semibold transition-all duration-300 ease-in-out hover:scale-105 active:scale-95`}

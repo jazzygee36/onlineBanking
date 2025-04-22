@@ -20,7 +20,7 @@ const HomeInput = ({
   return (
     <div className='w-full'>
       <h3 className='text-[#1E1E1E] text-[13px] font-roboto mb-2'>{label}</h3>
-      <div className='relative'>
+      <div className='relative items-center'>
         <input
           type={visible ? 'text' : type}
           placeholder={placeholder}
@@ -32,7 +32,7 @@ const HomeInput = ({
         />
         {type === 'password' && (
           <div
-            className='absolute cursor-pointer top-2 right-2'
+            className='absolute cursor-pointer top-3 right-2'
             onClick={handleTogglePassword}
           >
             {visible ? <OpenLock /> : <CloseLock />}
