@@ -15,7 +15,7 @@ import SelectInput from '../../components/selectInput';
 import HomeButton from '../../components/button';
 import axios from 'axios';
 import Toast from '../../components/toast';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface ValidationErrors {
   firstName?: { _errors: string[] };
@@ -67,7 +67,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
     acctType: '',
     acctPin: '',
   });
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [toast, setToast] = useState<{
@@ -211,7 +211,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
       );
       if (res.data.message === 'Successfully registered') {
         showToast(`${res.data.message}`, 'success');
-        setTimeout(() => navigate('/dashboard'), 1000);
+        // setTimeout(() => navigate('/dashboard'), 1000);
       } else if (res.data.message === 'Invalid credentials') {
         showToast('Not a user, please register', 'error'); // maybe this should be 'error'?
       } else {
