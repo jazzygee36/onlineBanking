@@ -15,6 +15,7 @@ import SelectInput from '../../components/selectInput';
 import HomeButton from '../../components/button';
 import axios from 'axios';
 import Toast from '../../components/toast';
+import { countries } from '../../utils/countries';
 // import { useNavigate } from 'react-router-dom';
 
 interface ValidationErrors {
@@ -209,21 +210,26 @@ const IndividualForm: FC<IndividualFormProps> = ({
         }
         // { withCredentials: true }
       );
+      setLoading(true);
       if (res.data.message === 'Successfully registered') {
         showToast(`${res.data.message}`, 'success');
         // setTimeout(() => navigate('/dashboard'), 1000);
-      } else if (res.data.message === 'Invalid credentials') {
+      } else if (res.data.message === 'Email already exist') {
+        showToast('Not a user, please register', 'error'); // maybe this should be 'error'?
+      } else if (res.data.message === 'Username already exist') {
         showToast('Not a user, please register', 'error'); // maybe this should be 'error'?
       } else {
         showToast(res?.data?.message || 'Unexpected response', 'info');
       }
 
       setCompleteRegistration(true);
+      setLoading(false);
     } catch (error: any) {
-      setApiError(
+      const errMsg =
         error.response?.data?.message ||
-          'Something went wrong. Please try again.'
-      );
+        'Something went wrong. Please try again.';
+      setApiError(errMsg);
+      showToast(errMsg, 'error');
     } finally {
       setLoading(false);
     }
@@ -231,6 +237,13 @@ const IndividualForm: FC<IndividualFormProps> = ({
 
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div>
         {step === 1 && (
           <>
@@ -378,13 +391,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
               <div className=''>
                 <SelectInput
                   label='Select your Country'
-                  option={[
-                    { value: '', label: 'Select country' },
-                    { value: 'United States', label: 'United States' },
-                    { value: 'Canada', label: 'Canada' },
-                    { value: 'Nigeria', label: 'Nigeria' },
-                    { value: 'India', label: 'India' },
-                  ]}
+                  option={countries}
                   name={'country'}
                   value={formData.country}
                   onChange={handleChange}
@@ -521,8 +528,6 @@ const IndividualForm: FC<IndividualFormProps> = ({
                     { value: 'fixed', label: 'Fixed deposite Account' },
                     { value: 'swift', label: 'Swift Account' },
                     { value: 'premium-swift', label: 'Premium Swift Account' },
-
-                    { value: 'Prefer not to say', label: 'Prefer not to say' },
                   ]}
                   name={'acctType'}
                   value={formData.acctType}
@@ -650,19 +655,12 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 onClick={handleFinishRegistration}
                 className='text-[#D71E0E] text-[14px] font-medium cursor-pointer'
               >
-                FINISH
+                {loading === true ? 'Loading...' : ' FINISH'}
               </h2>
             </div>
           )}
         </div>
       </div>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
     </>
   );
 };
