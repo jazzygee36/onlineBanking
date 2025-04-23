@@ -121,7 +121,7 @@ const Login = () => {
               <HomeInput
                 type='email'
                 placeholder='Enter your Email'
-                label='Your Email'
+                label='Enter email'
                 name='email'
                 value={formData.email}
                 onChange={handleChange}
@@ -137,7 +137,7 @@ const Login = () => {
               <HomeInput
                 type='password'
                 placeholder='Enter your Password'
-                label='Your Password'
+                label='Enter password'
                 name='password'
                 value={formData.password}
                 onChange={handleChange}
