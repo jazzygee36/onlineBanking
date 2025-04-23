@@ -74,8 +74,10 @@ const Login = () => {
       );
       if (res.data.message === 'Login successful') {
         showToast(`${res.data.message}`, 'success');
-        const token = res.data.token;
+        const token = res.data.message;
+        const user = res.data.user;
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
         setTimeout(() => navigate('/dashboard'), 1000);
       } else if (res.data.message === 'Invalid credentials') {
         showToast('Not a user, please register', 'error'); // maybe this should be 'error'?

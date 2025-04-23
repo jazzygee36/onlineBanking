@@ -26,16 +26,10 @@ const Card = [
     icon: <Transfer />,
   },
 ];
-const AccountSummary = [
-  {
-    acctNumber: '003994415280',
-    acctType: 'Current Account',
-    acctBalance: '$700,000.00',
-    acctStatus: 'Active',
-  },
-];
 
 const MyAccount = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
   return (
     <MainDashboard title={'My Account'}>
       <h1 className='font-medium my-6 md:hidden block'>Account details</h1>
@@ -68,43 +62,34 @@ const MyAccount = () => {
             </tr>
           </thead>
           <tbody>
-            {AccountSummary.map((item, index) => (
-              <tr key={index}>
-                <td className='p-2'>{item.acctNumber}</td>
-                <td className='p-2'>{item.acctType}</td>
-                <td className='p-2'>{item.acctBalance}</td>
-                <td className='p-2'>{item.acctStatus}</td>
-              </tr>
-            ))}
+            <td className='p-2'>{user.acctNumber}</td>
+            <td className='p-2'>{user.acctType}</td>
+            <td className='p-2'>${user.acctBalance?.toLocaleString()}</td>
+            <td className='p-2'>{user.active}</td>
           </tbody>
         </table>
       </div>
 
       {/* Card layout for small screens */}
       <div className='md:hidden my-4 space-y-4'>
-        {AccountSummary.map((item, index) => (
-          <div
-            key={index}
-            className='bg-white shadow rounded-lg p-4 border border-gray-200'
-          >
-            <div className='mb-2 flex justify-between'>
-              <span className='font-medium'>Account Number: </span>
-              <span>{item.acctNumber}</span>
-            </div>
-            <div className='mb-2 flex justify-between'>
-              <span className='font-medium'>Account Type: </span>
-              <span>{item.acctType}</span>
-            </div>
-            <div className='mb-2 flex justify-between'>
-              <span className='font-medium'>Account Balance: </span>
-              <span>{item.acctBalance}</span>
-            </div>
-            <div className='mb-2 flex justify-between'>
-              <span className='font-medium '>Account Status: </span>
-              <span>{item.acctStatus}</span>
-            </div>
+        <div className='bg-white shadow rounded-lg p-4 border border-gray-200'>
+          <div className='mb-2 flex justify-between'>
+            <span className='font-medium'>Account Number: </span>
+            <span>{user.acctNumber}</span>
           </div>
-        ))}
+          <div className='mb-2 flex justify-between'>
+            <span className='font-medium'>Account Type: </span>
+            <span>{user.acctType}</span>
+          </div>
+          <div className='mb-2 flex justify-between'>
+            <span className='font-medium'>Account Balance: </span>
+            <span>{user.acctBalance}</span>
+          </div>
+          <div className='mb-2 flex justify-between'>
+            <span className='font-medium '>Account Status: </span>
+            <span>{user.acctStatus}</span>
+          </div>
+        </div>
       </div>
     </MainDashboard>
   );

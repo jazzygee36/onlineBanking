@@ -96,7 +96,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
     if (step === 1) {
       result = step1Schema.safeParse(formData);
       if (result.success) {
-        localStorage.setItem('email', formData.email);
+        // localStorage.setItem('email', formData.email);
       }
     } else if (step === 2) {
       result = step2Schema.safeParse(formData);
