@@ -1,22 +1,53 @@
+import { useEffect, useState } from 'react';
 import MainDashboard from '../../components/dashboard';
 import HomeInput from '../../components/input';
+import axios from 'axios';
 // import SelectInput from '../../components/selectInput';
 
-const AccountSummary = [
-  {
-    id: '1',
-    beneficiary: 'Jimmy',
-    acctNumber: '003994415280',
-    bankName: 'First Bank',
-    acctType: 'Current Account',
-    amount: '$700,000.00',
-    acctStatus: 'Complete',
-    date: '2025-04-01 14:55:04',
-    receipt: 'View',
-  },
-];
-
 const Statement = () => {
+  interface Statement {
+    updatedAt: string;
+    id: string;
+    beneficiary: string;
+    senderAcctNumber: string;
+    senderBank: string;
+    acctType: string;
+    amount: string;
+    status: string;
+    date: string;
+    receipt: string;
+  }
+
+  const [allStatements, setAllStatements] = useState<Statement[]>([]);
+
+  console.log('allStatements', allStatements);
+
+  useEffect(() => {
+    const handleAllStatements = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/user/all-statements`
+        );
+        setAllStatements(res.data);
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
+    };
+    handleAllStatements();
+  }, []);
+
+  const formatDateTime = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    };
+    return new Date(dateString).toLocaleString('en-US', options);
+  };
+
   return (
     <MainDashboard title={'Statement'}>
       <h1 className='font-medium mt-6 md:hidden block'>Transaction History</h1>
@@ -34,29 +65,29 @@ const Statement = () => {
         <table className='min-w-[600px] w-full'>
           <thead className='bg-gray-200'>
             <tr>
-              <th className='p-2 font-medium text-left'>S/N</th>
+              {/* <th className='p-2 font-medium text-left'>S/N</th> */}
               <th className='p-2 font-medium text-left'>Beneficiary</th>
               <th className='p-2 font-medium text-left'>Account number</th>
               <th className='p-2 font-medium text-left'>Bank name</th>
               <th className='p-2 font-medium text-left'>Amount</th>
               <th className='p-2 font-medium text-left'>Status</th>
               <th className='p-2 font-medium text-left'>Date</th>
-              <th className='p-2 font-medium text-left'>Receipt</th>
+              {/* <th className='p-2 font-medium text-left'>Receipt</th> */}
             </tr>
           </thead>
           <tbody>
-            {AccountSummary.map((item, index) => (
+            {allStatements.map((statement, index) => (
               <tr key={index}>
-                <td className='p-2'>{item.id}</td>
-                <td className='p-2'>{item.beneficiary}</td>
-                <td className='p-2'>{item.acctNumber}</td>
-                <td className='p-2'>{item.bankName}</td>
-                <td className='p-2'>{item.amount}</td>
-                <td className='p-2'>{item.acctStatus}</td>
-                <td className='p-2'>{item.date}</td>
-                <td className='p-2 text-blue-600 underline cursor-pointer'>
+                <td className='p-2'>{statement.beneficiary}</td>
+                <td className='p-2'>{statement.senderAcctNumber}</td>
+                <td className='p-2'>{statement.senderBank}</td>
+                <td className='p-2'>{statement.amount}</td>
+                <td className='p-2'>{statement.status}</td>
+                <td className='p-2'>{formatDateTime(statement.updatedAt)}</td>
+
+                {/* <td className='p-2 text-blue-600 underline cursor-pointer'>
                   {item.receipt}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
@@ -65,45 +96,47 @@ const Statement = () => {
 
       {/* Mobile Cards */}
       <div className='block md:hidden space-y-4 h-[100%]'>
-        {AccountSummary.map((item, index) => (
+        {allStatements.map((statement, index) => (
           <div
             key={index}
             className='bg-white rounded-lg shadow p-4  border border-gray-200'
           >
             <div className='flex justify-between items-center mb-2'>
               <h2 className='font-normal text-md'>Beneficiary</h2>
-              <h2 className='font-medium text-md'>{item.beneficiary}</h2>
+              <h2 className='font-medium text-md'>{statement.beneficiary}</h2>
             </div>
             <div className='flex justify-between items-center mb-2'>
               <span className='font-normal'>Account Number:</span>{' '}
-              <span className='font-medium'>{item.acctNumber}</span>{' '}
+              <span className='font-medium'>{statement.senderAcctNumber}</span>{' '}
             </div>
             <div className='flex justify-between items-center mb-2'>
               <span className='font-normal'>Bank:</span>{' '}
-              <span className='font-medium'>{item.bankName}</span>{' '}
+              <span className='font-medium'>{statement.senderBank}</span>{' '}
             </div>
 
             <div className='flex justify-between items-center mb-2'>
               <span className='font-normal'>Amount:</span>{' '}
-              <span className='font-medium'>{item.amount}</span>{' '}
+              <span className='font-medium'>{statement.amount}</span>{' '}
             </div>
 
             <div className='flex justify-between items-center mb-2'>
               <span className='font-normal'>Date:</span>{' '}
-              <span className='font-medium'>{item.date}</span>{' '}
+              <span className='font-medium'>
+                {formatDateTime(statement.updatedAt)}
+              </span>{' '}
             </div>
 
             <div className='flex justify-between items-center mb-2'>
               <span className='font-normal'>Status:</span>{' '}
-              <span className='font-medium'>{item.acctStatus}</span>{' '}
+              <span className='font-medium'>{statement.status}</span>{' '}
             </div>
 
-            <div className='flex justify-between items-center mb-2'>
+            {/* <div className='flex justify-between items-center mb-2'>
               <p></p>
               <p className='text-sm text-blue-600 underline cursor-pointer  float-right'>
                 {item.receipt}
               </p>
-            </div>
+            </div> */}
 
             <div> </div>
           </div>
