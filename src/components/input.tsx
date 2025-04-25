@@ -12,6 +12,7 @@ const HomeInput = ({
   name,
   border,
   onKeyPress,
+  readOnly,
 }: InputProps) => {
   const [visible, setVisible] = useState<boolean>(false);
   const handleTogglePassword = () => {
@@ -28,6 +29,7 @@ const HomeInput = ({
           value={value}
           onChange={onChange}
           onKeyPress={onKeyPress}
+          readOnly={readOnly}
           className={`h-[52px] w-full  border-solid border-[1px] border-[#E8ECEF] ${border} rounded-[2px] outline-none px-4 placeholder-[#98A9BC] placeholder:text-[14px] placeholder:font-[400]`}
         />
         {type === 'password' && (

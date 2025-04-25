@@ -5,6 +5,7 @@ import HomeButton from '../../components/button';
 
 const Transfer = () => {
   const [fundType, setFundType] = useState('');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   return (
     <MainDashboard title={'Transfer'}>
@@ -13,7 +14,7 @@ const Transfer = () => {
       <div className='w-full bg-gray-200 p-4 my-4 flex items-center justify-between '>
         <div className='flex gap-4'>
           <h1 className='font-medium'> Account Number: </h1>
-          <h1> 003994415280</h1>
+          <h1> {user.acctNumber}</h1>
         </div>
       </div>
 

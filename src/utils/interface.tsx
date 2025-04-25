@@ -16,6 +16,7 @@ export interface CardProps {
 export interface InputProps {
   type: string;
   placeholder: string;
+  readOnly?: boolean;
   label?: string;
   name?: string;
   value?: string;

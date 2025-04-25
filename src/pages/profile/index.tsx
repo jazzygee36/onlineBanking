@@ -3,13 +3,21 @@ import MainDashboard from '../../components/dashboard';
 import HomeInput from '../../components/input';
 
 const Profile = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
   return (
     <MainDashboard title={'Profile'}>
       <h1 className='font-medium my-6 md:hidden block'>Profile Settings</h1>
       <div className='grid grid-cols-1 md:grid-cols-2 items-center gap-7 w-full '>
         <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-full'>
-            <HomeInput type={'text'} placeholder={''} label='Account number' />
+            <HomeInput
+              type={'text'}
+              placeholder={''}
+              label='Account number'
+              value={user.acctNumber}
+              readOnly
+            />
           </div>
         </div>
         <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
@@ -18,6 +26,7 @@ const Profile = () => {
               type={'text'}
               placeholder={''}
               label='Account username'
+              value={user.username}
             />
           </div>
         </div>
@@ -30,7 +39,12 @@ const Profile = () => {
         </div>
         <div className='   flex items-center gap-1 md:gap-10 w-[100%]'>
           <div className='w-[100%]'>
-            <HomeInput type={'text'} placeholder={''} label='Email address' />
+            <HomeInput
+              type={'text'}
+              placeholder={''}
+              label='Email address'
+              value={user.email}
+            />
           </div>
         </div>
       </div>
