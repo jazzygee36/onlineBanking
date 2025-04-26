@@ -1,24 +1,46 @@
 // components/chatBox.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MessageSquare, X } from 'lucide-react';
+
+declare global {
+  interface Window {
+    tidioChatApi: any;
+  }
+}
 
 const ChatBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState('');
+  const [tidioReady, setTidioReady] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (window.tidioChatApi) {
+        setTidioReady(true);
+        clearInterval(interval);
+      }
+    }, 500);
+  }, []);
 
   const handleSend = () => {
-    if (input.trim()) {
-      setMessages([...messages, input]);
-      setInput('');
+    if (!input.trim()) return;
+
+    setMessages([...messages, input]);
+
+    // Send message to Tidio if available
+    if (tidioReady && window.tidioChatApi) {
+      window.tidioChatApi.display(true); // open Tidio chat if it's hidden
+      window.tidioChatApi.messageFromVisitor(input);
     }
+
+    setInput('');
   };
 
   return (
     <div className='fixed bottom-6 right-6 z-50'>
       {isOpen ? (
         <div className='w-80 bg-white border border-gray-300 rounded-lg shadow-xl flex flex-col'>
-          {/* Header */}
           <div className='flex items-center justify-between p-4 border-b'>
             <h2 className='text-base font-semibold text-[#5534A5]'>
               Live Chat
@@ -26,7 +48,6 @@ const ChatBox = () => {
             <X className='cursor-pointer' onClick={() => setIsOpen(false)} />
           </div>
 
-          {/* Messages */}
           <div className='flex-1 overflow-y-auto max-h-60 p-4 space-y-2 text-sm text-gray-700'>
             {messages.length ? (
               messages.map((msg, idx) => (
@@ -42,7 +63,6 @@ const ChatBox = () => {
             )}
           </div>
 
-          {/* Input */}
           <div className='flex items-center border-t p-2'>
             <input
               type='text'

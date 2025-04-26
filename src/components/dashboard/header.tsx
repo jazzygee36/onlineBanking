@@ -59,7 +59,7 @@ const Header = ({
           className='text-sm cursor-pointer'
           onClick={() => setIsDropdownOpen((prev) => !prev)}
         >
-          Welcome Sainty
+          Welcome
         </h3>
         <div
           onClick={() => setIsDropdownOpen((prev) => !prev)}

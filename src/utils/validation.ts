@@ -74,6 +74,16 @@ export const signInSchema = z.object({
   password: z.string().min(3, 'This field is required'),
 });
 
+export const transferSchema = z.object({
+  country: z.string().min(3, 'This field is required'),
+  amount: z.string().min(2, 'This field is required'),
+  name: z.string().min(2, 'This field is required'),
+  acctNumber: z.string().min(2, 'This field is required'),
+  bankName: z.string().min(2, 'This field is required'),
+  bankBranch: z.string().min(2, 'This field is required'),
+  onlinePin: z.string().min(2, 'This field is required'),
+});
+
 // Define a base schema (plain ZodObject)
 const baseCorporateSchema = z.object({
   companyName: z.string().min(3, 'This field is required'),
