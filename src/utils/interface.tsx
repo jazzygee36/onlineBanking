@@ -76,3 +76,16 @@ export interface dashboardProps {
 export interface headerProps {
   title: string;
 }
+
+export interface TransferFundProps {
+  amount: string;
+  name: string;
+  acctNumber: string;
+  bankName: string;
+  branchAddress: string;
+  onlinePin: string;
+  terms: string;
+  tacCode: string;
+  dwtcCode: string;
+  noneResidentTax: string;
+}

@@ -74,15 +74,16 @@ export const signInSchema = z.object({
   password: z.string().min(3, 'This field is required'),
 });
 
-export const transferSchema = z.object({
-  country: z.string().min(3, 'This field is required'),
-  amount: z.string().min(2, 'This field is required'),
-  name: z.string().min(2, 'This field is required'),
-  acctNumber: z.string().min(2, 'This field is required'),
-  bankName: z.string().min(2, 'This field is required'),
-  bankBranch: z.string().min(2, 'This field is required'),
-  onlinePin: z.string().min(2, 'This field is required'),
-});
+// export const transferSchema = z.object({
+//   country: z.string().min(3, 'This field is required'),
+//   amount: z.string().min(2, 'This field is required'),
+//   name: z.string().min(2, 'This field is required'),
+//   acctNumber: z.string().min(2, 'This field is required'),
+//   bankName: z.string().min(2, 'This field is required'),
+//   bankBranch: z.string().min(2, 'This field is required'),
+//   onlinePin: z.string().min(2, 'This field is required'),
+//   branchAddress: z.string().min(2, 'This field is required'),
+// });
 
 // Define a base schema (plain ZodObject)
 const baseCorporateSchema = z.object({
@@ -105,3 +106,48 @@ export const corporateSchema = baseCorporateSchema.refine(
     path: ['confirmPassword'],
   }
 );
+
+export const transferFunSchema = z.object({
+  country: z.string().min(3, 'This field is required'),
+  amount: z.string().min(3, 'This field is required'),
+  name: z.string().min(3, 'This field is required'),
+  acctNumber: z.string().min(3, 'This field is required'),
+  bankName: z.string().min(3, 'This field is required'),
+
+  bankAddress: z.string().min(3, 'This field is required'),
+  onlinePin: z.string().min(4, 'This field is required'),
+  terms: z.string().min(0, 'This field is required'),
+  tacCode: z.string().min(4, 'This field is required'),
+  dwtcCode: z.string().min(4, 'This field is required'),
+  noneResidentTax: z.string().min(4, 'This field is required'),
+});
+
+export const transferStep1Schema = transferFunSchema.pick({
+  amount: true,
+  name: true,
+  acctNumber: true,
+  bankName: true,
+  bankAddress: true,
+  onlinePin: true,
+  country: true,
+});
+
+export const transferStep2Schema = transferFunSchema.pick({
+  amount: true,
+  name: true,
+  acctNumber: true,
+  bankName: true,
+  bankAddress: true,
+
+  onlinePin: true,
+  country: true,
+});
+export const transferStep3Schema = transferFunSchema.pick({
+  terms: true,
+});
+
+export const transferStep4Schema = transferFunSchema.pick({
+  tacCode: true,
+  dwtcCode: true,
+  noneResidentTax: true,
+});
