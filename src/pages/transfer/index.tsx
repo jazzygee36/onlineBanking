@@ -151,6 +151,35 @@ const TransferFund: FC<TransferFundProps> = () => {
   //   }
   // };
 
+  const handleSubStepNext = () => {
+    if (subStep === 'TAC' && !formData.tacCode) {
+      setErrors((prev) => ({ ...prev, tacCode: 'TAC Code is required' }));
+      return;
+    }
+
+    if (subStep === 'DWTC' && !formData.dwtcCode) {
+      setErrors((prev) => ({ ...prev, dwtcCode: 'DWTC Code is required' }));
+      return;
+    }
+
+    if (subStep === 'NON_RESIDENT' && !formData.noneResidentTax) {
+      setErrors((prev) => ({
+        ...prev,
+        noneResidentTax: 'Non-Resident Tax is required',
+      }));
+      return;
+    }
+
+    // If input is filled, move to next subStep
+    if (subStep === 'TAC') {
+      setSubStep('DWTC');
+    } else if (subStep === 'DWTC') {
+      setSubStep('NON_RESIDENT');
+    } else if (subStep === 'NON_RESIDENT') {
+      nextStep(); // move to final success page after last input
+    }
+  };
+
   return (
     <MainDashboard title={'Transfer'}>
       <h1 className='font-medium mt-6 md:hidden block'>Funds Transfer</h1>
@@ -349,15 +378,30 @@ const TransferFund: FC<TransferFundProps> = () => {
                         You need to enter TAC to Proceed
                       </p>
                       <div className='flex items-center gap-2'>
-                        <HomeInput type={'text'} placeholder={'Enter TAC'} />
+                        <HomeInput
+                          type={'text'}
+                          placeholder={'Enter TAC'}
+                          name='tacCode' // Make sure name is set
+                          value={formData.tacCode} // Bind the value to formData.tacCode
+                          onChange={handleChange}
+                          border={
+                            errors.tacCode
+                              ? 'border-[#EF4444]'
+                              : 'border-[#E8ECEF]'
+                          }
+                        />
                         <HomeButton
                           title={'Continue'}
                           type={'button'}
                           bg={'blue'}
                           width={''}
-                          onClick={() => setSubStep('DWTC')}
+                          // onClick={() => setSubStep('DWTC')}
+                          onClick={handleSubStepNext}
                         />
                       </div>
+                      {errors.tacCode && (
+                        <p className='text-red-500 text-sm'>{errors.terms}</p>
+                      )}
                     </>
                   )}
 
@@ -367,15 +411,30 @@ const TransferFund: FC<TransferFundProps> = () => {
                         You need to enter DWTC Code to Proceed
                       </p>
                       <div className='flex items-center gap-2'>
-                        <HomeInput type={'text'} placeholder={'Enter DWTC'} />
+                        <HomeInput
+                          type={'text'}
+                          placeholder={'Enter DWTC'}
+                          name='dwtcCode' // Make sure name is set
+                          value={formData.dwtcCode} // Bind the value to formData.tacCode
+                          onChange={handleChange}
+                          border={
+                            errors.dwtcCode
+                              ? 'border-[#EF4444]'
+                              : 'border-[#E8ECEF]'
+                          }
+                        />
                         <HomeButton
                           title={'Continue'}
                           type={'button'}
                           bg={'blue'}
                           width={''}
-                          onClick={() => setSubStep('NON_RESIDENT')}
+                          // onClick={() => setSubStep('NON_RESIDENT')}
+                          onClick={handleSubStepNext}
                         />
                       </div>
+                      {errors.dwtcCode && (
+                        <p className='text-red-500 text-sm'>{errors.terms}</p>
+                      )}
                     </>
                   )}
 
@@ -388,6 +447,14 @@ const TransferFund: FC<TransferFundProps> = () => {
                         <HomeInput
                           type={'text'}
                           placeholder={'Enter Non-ResidentTax Code'}
+                          name='noneResidentTax' // Make sure name is set
+                          value={formData.noneResidentTax} // Bind the value to formData.tacCode
+                          onChange={handleChange}
+                          border={
+                            errors.noneResidentTax
+                              ? 'border-[#EF4444]'
+                              : 'border-[#E8ECEF]'
+                          }
                         />
                         <HomeButton
                           title={'Continue'}
@@ -397,6 +464,9 @@ const TransferFund: FC<TransferFundProps> = () => {
                           onClick={nextStep}
                         />
                       </div>
+                      {errors.noneResidentTax && (
+                        <p className='text-red-500 text-sm'>{errors.terms}</p>
+                      )}
                     </>
                   )}
                 </>
