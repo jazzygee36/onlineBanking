@@ -139,17 +139,17 @@ const TransferFund: FC<TransferFundProps> = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = async () => {
-    const result = transferFunSchema.safeParse(formData);
-    if (result.success) {
-      // Send the data to API or whatever you want to do
-    } else {
-      const validationErrors = result.error.format() as ValidationErrors;
-      setErrors({
-        // map the errors like before
-      });
-    }
-  };
+  // const handleSubmit = async () => {
+  //   const result = transferFunSchema.safeParse(formData);
+  //   if (result.success) {
+  //     // Send the data to API or whatever you want to do
+  //   } else {
+  //     const validationErrors = result.error.format() as ValidationErrors;
+  //     setErrors({
+  //       // map the errors like before
+  //     });
+  //   }
+  // };
 
   return (
     <MainDashboard title={'Transfer'}>
