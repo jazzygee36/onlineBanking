@@ -8,10 +8,10 @@ import Login from './pages/login';
 import SignUp from './pages/signup';
 import Dashboard from './pages/dashboard';
 import MyAccount from './pages/myAccount';
-import Transfer from './pages/transfer';
 import Statement from './pages/statement';
 import Profile from './pages/profile';
 import PayBill from './pages/payBill';
+import TransferFund from './pages/transfer';
 
 const App = () => {
   // PrivateRoute component
@@ -51,7 +51,7 @@ const App = () => {
           path='/transfer'
           element={
             <PrivateRoute>
-              <Transfer />
+              <TransferFund />
             </PrivateRoute>
           }
         />

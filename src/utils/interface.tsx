@@ -78,14 +78,14 @@ export interface headerProps {
 }
 
 export interface TransferFundProps {
-  amount: string;
-  name: string;
-  acctNumber: string;
-  bankName: string;
-  branchAddress: string;
-  onlinePin: string;
-  terms: string;
-  tacCode: string;
-  dwtcCode: string;
-  noneResidentTax: string;
+  amount?: string;
+  name?: string;
+  acctNumber?: string;
+  bankName?: string;
+  branchAddress?: string;
+  onlinePin?: string;
+  terms?: string;
+  tacCode?: string;
+  dwtcCode?: string;
+  noneResidentTax?: string;
 }
