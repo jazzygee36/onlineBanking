@@ -63,10 +63,14 @@ const MyAccount = () => {
     };
     handleAllStatements();
   }, []);
-
-  const completedTotal = allStatements
-    .filter((statement) => statement.status === 'Completed')
-    .reduce((sum, statement) => sum + parseFloat(statement.amount), 0);
+  const balance = allStatements.reduce((sum, statement) => {
+    if (statement.status === 'Completed') {
+      return sum + parseFloat(statement.amount);
+    } else if (statement.status === 'Pending') {
+      return sum - parseFloat(statement.amount);
+    }
+    return sum;
+  }, 0);
 
   return (
     <MainDashboard title={'My Account'}>
@@ -110,7 +114,7 @@ const MyAccount = () => {
                 <tr>
                   <td className='p-2'>{user.acctNumber}</td>
                   <td className='p-2'>{user.acctType}</td>
-                  <td className='p-2'>${completedTotal.toLocaleString()}</td>
+                  <td className='p-2'>${balance.toLocaleString()}</td>
                   <td className='p-2'>{user.active}</td>
                 </tr>
               </tbody>
@@ -130,7 +134,7 @@ const MyAccount = () => {
               </div>
               <div className='mb-2 flex justify-between'>
                 <span className='font-medium'>Account Balance: </span>
-                <span>${completedTotal.toLocaleString()}</span>
+                <span>${balance.toLocaleString()}</span>
               </div>
               <div className='mb-2 flex justify-between'>
                 <span className='font-medium '>Account Status: </span>
