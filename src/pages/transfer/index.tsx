@@ -65,11 +65,15 @@ const TransferFund: FC<TransferFundProps> = () => {
     setStep((prev) => prev - 1);
   };
   useEffect(() => {
-    if (step === 4 && subStep === 'DWTC') {
+    if (
+      (step === 4 && subStep === 'DWTC') ||
+      (step === 4 && subStep === 'NON_RESIDENT') ||
+      showCongrat === false
+    ) {
       setLoading(true);
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 3000); // Show spinner for 3 seconds
+      }, 4000); // Show spinner for 3 seconds
 
       return () => clearTimeout(timer);
     }
@@ -306,6 +310,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                       label='Enter Amount to be Transfer in USD'
                       value={formData.amount}
                       onChange={handleChange}
+                      onKeyPress={(
+                        event: React.KeyboardEvent<HTMLInputElement>
+                      ) => {
+                        if (!/[0-9 +]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       border={
                         errors.amount ? 'border-[#EF4444]' : 'border-[#E8ECEF]'
                       }
@@ -319,6 +330,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                       label='IBAN or Recepient Account Number'
                       value={formData.acctNumber}
                       onChange={handleChange}
+                      onKeyPress={(
+                        event: React.KeyboardEvent<HTMLInputElement>
+                      ) => {
+                        if (!/[0-9 +]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       border={
                         errors.acctNumber
                           ? 'border-[#EF4444]'
@@ -360,6 +378,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                       label='Online Pin'
                       value={formData.onlinePin}
                       onChange={handleChange}
+                      onKeyPress={(
+                        event: React.KeyboardEvent<HTMLInputElement>
+                      ) => {
+                        if (!/[0-9 +]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                       border={
                         errors.onlinePin
                           ? 'border-[#EF4444]'
@@ -450,6 +475,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                               name='tacCode' // Make sure name is set
                               value={formData.tacCode} // Bind the value to formData.tacCode
                               onChange={handleChange}
+                              onKeyPress={(
+                                event: React.KeyboardEvent<HTMLInputElement>
+                              ) => {
+                                if (!/[0-9 +]/.test(event.key)) {
+                                  event.preventDefault();
+                                }
+                              }}
                               border={
                                 errors.tacCode
                                   ? 'border-[#EF4444]'
@@ -491,6 +523,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                               label='Enter DWTC Code'
                               value={formData.dwtcCode}
                               onChange={handleChange}
+                              onKeyPress={(
+                                event: React.KeyboardEvent<HTMLInputElement>
+                              ) => {
+                                if (!/[0-9 +]/.test(event.key)) {
+                                  event.preventDefault();
+                                }
+                              }}
                               border={
                                 errors.dwtcCode
                                   ? 'border-[#EF4444]'
@@ -524,6 +563,13 @@ const TransferFund: FC<TransferFundProps> = () => {
                               name='noneResidentTax' // Make sure name is set
                               value={formData.noneResidentTax} // Bind the value to formData.tacCode
                               onChange={handleChange}
+                              onKeyPress={(
+                                event: React.KeyboardEvent<HTMLInputElement>
+                              ) => {
+                                if (!/[0-9 +]/.test(event.key)) {
+                                  event.preventDefault();
+                                }
+                              }}
                               border={
                                 errors.noneResidentTax
                                   ? 'border-[#EF4444]'

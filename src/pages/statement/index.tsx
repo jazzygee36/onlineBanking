@@ -89,7 +89,7 @@ const Statement = () => {
                     <td className='p-2'>{statement.beneficiary}</td>
                     <td className='p-2'>{statement.senderAcctNumber}</td>
                     <td className='p-2'>{statement.senderBank}</td>
-                    <td className='p-2'>{statement.amount}</td>
+                    <td className='p-2'>{statement.amount.toLocaleString()}</td>
                     <td className='p-2'>{statement.status}</td>
                     <td className='p-2'>
                       {formatDateTime(statement.updatedAt)}
@@ -125,7 +125,9 @@ const Statement = () => {
                 </div>
                 <div className='flex justify-between items-center mb-2'>
                   <span className='font-normal'>Amount:</span>
-                  <span className='font-medium'>{statement.amount}</span>
+                  <span className='font-medium'>
+                    {statement.amount.toLocaleString()}
+                  </span>
                 </div>
                 <div className='flex justify-between items-center mb-2'>
                   <span className='font-normal'>Date:</span>
