@@ -374,7 +374,7 @@ const TransferFund: FC<TransferFundProps> = () => {
                     <HomeInput
                       name='onlinePin'
                       type={'text'}
-                      placeholder={''}
+                      placeholder={'Online pin you created...'}
                       label='Online Pin'
                       value={formData.onlinePin}
                       onChange={handleChange}

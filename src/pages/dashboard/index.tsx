@@ -5,6 +5,7 @@ import Profile from '../../assets/svg/profile';
 import Statement from '../../assets/svg/statement';
 import Transfer from '../../assets/svg/transfer';
 import MainDashboard from '../../components/dashboard';
+import Mail from '../../assets/svg/mail';
 
 const Board = [
   { title: 'My Account', icon: MyAccount, path: '/my-account' },
@@ -16,12 +17,45 @@ const Board = [
 ];
 
 const Dashboard = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const Card = [
+    {
+      label: 'Account Number',
+      title: user?.acctNumber,
+      icon: <Mail />,
+    },
+    {
+      label: 'Account Type',
+      title: user?.acctType,
+      icon: <Mail />,
+    },
+    {
+      label: 'Account Status',
+      title: user?.active,
+      icon: <Mail />,
+    },
+  ];
   const navigate = useNavigate();
   return (
     <MainDashboard title={'Dashbaord'}>
       <h1 className='font-medium my-6 md:hidden block'>Dashboard</h1>
-
-      <div className='flex flex-col items-center justify-center gap-8  h-full'>
+      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 mb-4 mx-4 md:mx-8'>
+        {Card.map((item, index) => (
+          <div
+            key={index}
+            className='flex items-center justify-center bg-white shadow-sm rounded-lg p-10 gap-3'
+          >
+            {/* <div className='bg-[#f8f9fa]  rounded-lg'>{item.icon}</div> */}
+            <div className=' flex flex-col items-center justify-center gap-3'>
+              <h2 className='text-md font-medium'>{item?.label}</h2>
+              <p className='text-sm font-normal text-[#6c757d]'>
+                {item?.title}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className='flex flex-col items-center mt-8 gap-8  h-full'>
         {/* <h4 className='font-semibold underline  text-gray-500 text-center md:hidden sm:block'>
           Navigate with the icons below.
         </h4> */}

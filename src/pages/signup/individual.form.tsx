@@ -156,10 +156,11 @@ const IndividualForm: FC<IndividualFormProps> = ({
     // Validate step 3 using step3Schema
     const result = step4Schema.safeParse(formData);
     if (!result.success) {
+      const validationErrors = result.error.format() as ValidationErrors;
       setErrors((prevErrors) => ({
         ...prevErrors,
-        // verificationCode:
-        // validationErrors.verificationCode?._errors[0] || 'Code is required',
+        password: validationErrors.password?._errors[0] || '',
+        confirmPassword: validationErrors.confirmPassword?._errors[0] || '',
       }));
       return; // Do not finish registration if validation fails
     }
@@ -221,6 +222,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
       } else {
         showToast(res?.data?.message || 'Unexpected response', 'info');
       }
+      setLoading(true);
 
       setCompleteRegistration(true);
       setLoading(false);
@@ -575,7 +577,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
             <div className='bg-[#3c1414] w-full h-[54px] mt-5 mb-5 text-white text-center flex items-center justify-center font-roboto text-[14px] font-medium'>
               Create Password
             </div>
-            <div className='my-5 flex items-center gap-5'>
+            <div className=''>
               <HomeInput
                 type={'password'}
                 placeholder={'Enter your Password'}
@@ -655,7 +657,7 @@ const IndividualForm: FC<IndividualFormProps> = ({
                 onClick={handleFinishRegistration}
                 className='text-[#D71E0E] text-[14px] font-medium cursor-pointer'
               >
-                {loading === true ? 'Loading...' : ' FINISH'}
+                {loading ? 'Loading...' : ' FINISH'}
               </h2>
             </div>
           )}
