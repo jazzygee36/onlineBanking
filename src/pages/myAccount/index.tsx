@@ -50,9 +50,10 @@ const MyAccount = () => {
   useEffect(() => {
     const handleAllStatements = async () => {
       setLoading(true);
+      const userId = user.id;
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/user/all-statements`
+          `${import.meta.env.VITE_BASE_URL}/user/${userId}/statements`
         );
         setAllStatements(res.data);
       } catch (error) {
@@ -138,7 +139,7 @@ const MyAccount = () => {
               </div>
               <div className='mb-2 flex justify-between'>
                 <span className='font-medium '>Account Status: </span>
-                <span>{user.acctStatus}</span>
+                <span>{user.active}</span>
               </div>
             </div>
           </div>

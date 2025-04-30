@@ -36,6 +36,7 @@ type FormData = z.infer<typeof transferFunSchema>;
 const TransferFund: FC<TransferFundProps> = () => {
   const [fundType, setFundType] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showCongrat, setShowCongrate] = useState(false);
 
   const [step, setStep] = useState(1);
   const [subStep, setSubStep] = useState<'TAC' | 'DWTC' | 'NON_RESIDENT'>(
@@ -63,6 +64,16 @@ const TransferFund: FC<TransferFundProps> = () => {
   const prevStep = () => {
     setStep((prev) => prev - 1);
   };
+  useEffect(() => {
+    if (step === 4 && subStep === 'DWTC') {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 3000); // Show spinner for 3 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [step, subStep]);
 
   const handleNextStep = async () => {
     let result;
@@ -135,7 +146,7 @@ const TransferFund: FC<TransferFundProps> = () => {
       setLoading(true); // reset to true when step 4 starts
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 3000);
+      }, 4000);
 
       return () => clearTimeout(timer);
     }
@@ -153,9 +164,10 @@ const TransferFund: FC<TransferFundProps> = () => {
   const handleSubmit = async () => {
     const result = transferFunSchema.safeParse(formData);
     if (result.success) {
+      const userId = user.id;
       try {
         await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/user/create-statement`,
+          `${import.meta.env.VITE_BASE_URL}/user/${userId}/create-statement`,
           {
             beneficiary: formData.name,
             senderAcctNumber: formData.acctNumber,
@@ -169,6 +181,7 @@ const TransferFund: FC<TransferFundProps> = () => {
       } finally {
         setIsLoading(false);
       }
+
       setShowCongrate(true);
     } else {
       setErrors({
@@ -205,11 +218,19 @@ const TransferFund: FC<TransferFundProps> = () => {
       nextStep(); // move to final success page after last input
     }
   };
-  const [showCongrat, setShowCongrate] = useState(false);
   return (
     <MainDashboard title={'Transfer'}>
       {showCongrat ? (
-        <Success />
+        loading ? (
+          <div className='flex flex-col justify-center items-center py-20'>
+            <div className='animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid'></div>
+            <p className='mt-4 text-center'>
+              Please wait while we process your transaction...
+            </p>
+          </div>
+        ) : (
+          <Success />
+        )
       ) : (
         <>
           <h1 className='font-medium mt-6 md:hidden block'>Funds Transfer</h1>
@@ -452,17 +473,23 @@ const TransferFund: FC<TransferFundProps> = () => {
                         </>
                       )}
 
-                      {subStep === 'DWTC' && (
-                        <>
-                          <p className='text-[red]'>
-                            You need to enter DWTC Code to Proceed
-                          </p>
-                          <div className='flex items-center gap-2'>
+                      {step === 4 &&
+                        subStep === 'DWTC' &&
+                        (loading ? (
+                          <div className='flex flex-col justify-center items-center py-20'>
+                            <div className='animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid'></div>
+                            <p className='mt-4'>
+                              Please wait while we process your transaction...
+                            </p>
+                          </div>
+                        ) : (
+                          <div className='flex flex-col m-auto justify-center items-center w-full md:w-[50%] gap-4'>
                             <HomeInput
-                              type={'text'}
-                              placeholder={'Enter DWTC'}
-                              name='dwtcCode' // Make sure name is set
-                              value={formData.dwtcCode} // Bind the value to formData.tacCode
+                              name='dwtcCode'
+                              type='text'
+                              placeholder=''
+                              label='Enter DWTC Code'
+                              value={formData.dwtcCode}
                               onChange={handleChange}
                               border={
                                 errors.dwtcCode
@@ -470,22 +497,20 @@ const TransferFund: FC<TransferFundProps> = () => {
                                   : 'border-[#E8ECEF]'
                               }
                             />
+                            {errors.dwtcCode && (
+                              <p className='text-sm text-red-500'>
+                                {errors.dwtcCode}
+                              </p>
+                            )}
                             <HomeButton
-                              title={'Continue'}
-                              type={'button'}
-                              bg={'blue'}
-                              width={''}
-                              // onClick={() => setSubStep('NON_RESIDENT')}
                               onClick={handleSubStepNext}
+                              title='Next'
+                              type={'submit'}
+                              bg={'blue'}
+                              width={'100%'}
                             />
                           </div>
-                          {errors.dwtcCode && (
-                            <p className='text-red-500 text-sm'>
-                              {errors.terms}
-                            </p>
-                          )}
-                        </>
-                      )}
+                        ))}
 
                       {subStep === 'NON_RESIDENT' && (
                         <>

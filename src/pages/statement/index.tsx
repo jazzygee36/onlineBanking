@@ -17,15 +17,18 @@ const Statement = () => {
     date: string;
     receipt: string;
   }
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [allStatements, setAllStatements] = useState<Statement[]>([]);
+  console.log('allStatements', allStatements);
   const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   useEffect(() => {
     const handleAllStatements = async () => {
+      const userId = user.id;
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/user/all-statements`
+          `${import.meta.env.VITE_BASE_URL}/user/${userId}/statements`
         );
         setAllStatements(res.data);
       } catch (error) {
