@@ -2,90 +2,58 @@
 import { useEffect, useState } from 'react';
 import { MessageSquare, X } from 'lucide-react';
 
+const TAWK_TO_PROPERTY_ID = 'YOUR_TAWKTO_PROPERTY_ID'; // Replace with your actual Tawk.to ID
+const TAWK_TO_WIDGET_ID = 'default'; // Usually it's 'default', but double-check from Tawk.to embed code
 declare global {
   interface Window {
-    tidioChatApi: any;
+    Tawk_API?: {
+      maximize: () => void;
+      minimize: () => void;
+    };
   }
 }
-
 const ChatBox = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<string[]>([]);
-  const [input, setInput] = useState('');
-  const [tidioReady, setTidioReady] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (window.tidioChatApi) {
-        setTidioReady(true);
-        clearInterval(interval);
-      }
-    }, 500);
+    const script = document.createElement('script');
+    script.src = `https://embed.tawk.to/${TAWK_TO_PROPERTY_ID}/${TAWK_TO_WIDGET_ID}`;
+    script.async = true;
+    script.charset = 'UTF-8';
+    script.setAttribute('crossorigin', '*');
+    document.body.appendChild(script);
+
+    return () => {
+      // Optional: Clean up the script when component unmounts
+      script.remove();
+    };
   }, []);
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-
-    setMessages([...messages, input]);
-
-    // Send message to Tidio if available
-    if (tidioReady && window.tidioChatApi) {
-      window.tidioChatApi.display(true); // open Tidio chat if it's hidden
-      window.tidioChatApi.messageFromVisitor(input);
-    }
-
-    setInput('');
-  };
 
   return (
     <div className='fixed bottom-6 right-6 z-50'>
-      {isOpen ? (
-        <div className='w-80 bg-white border border-gray-300 rounded-lg shadow-xl flex flex-col'>
-          <div className='flex items-center justify-between p-4 border-b'>
-            <h2 className='text-base font-semibold text-[#5534A5]'>
-              Live Chat
-            </h2>
-            <X className='cursor-pointer' onClick={() => setIsOpen(false)} />
-          </div>
-
-          <div className='flex-1 overflow-y-auto max-h-60 p-4 space-y-2 text-sm text-gray-700'>
-            {messages.length ? (
-              messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className='bg-[#F1EEF6] p-2 rounded-md self-end text-right'
-                >
-                  {msg}
-                </div>
-              ))
-            ) : (
-              <p className='text-gray-400 text-center'>Say hello 👋</p>
-            )}
-          </div>
-
-          <div className='flex items-center border-t p-2'>
-            <input
-              type='text'
-              className='flex-1 px-2 py-1 border rounded-md text-sm'
-              placeholder='Type your message...'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            />
-            <button
-              className='ml-2 bg-[#5534A5] text-white px-3 py-1 text-sm rounded-md'
-              onClick={handleSend}
-            >
-              Send
-            </button>
-          </div>
-        </div>
-      ) : (
+      {!isOpen ? (
         <button
           className='bg-[#3c1414] hover:bg-[#6f49c4] text-white rounded-full p-3 shadow-lg'
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            if (window.Tawk_API) {
+              window.Tawk_API.maximize();
+            }
+          }}
         >
           <MessageSquare />
+        </button>
+      ) : (
+        <button
+          className='bg-[#5534A5] text-white rounded-full p-3 shadow-lg'
+          onClick={() => {
+            setIsOpen(false);
+            if (window.Tawk_API) {
+              window.Tawk_API.minimize();
+            }
+          }}
+        >
+          <X />
         </button>
       )}
     </div>
@@ -93,3 +61,4 @@ const ChatBox = () => {
 };
 
 export default ChatBox;
+// mPt,Fdn?y3#&v*R
