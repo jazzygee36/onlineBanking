@@ -39,6 +39,9 @@ const Header = ({
     setIsDropdownOpen(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('email');
+    localStorage.removeItem('twk_token_68127a353aab2b190ea2ad29');
+
     navigate('/');
   };
 

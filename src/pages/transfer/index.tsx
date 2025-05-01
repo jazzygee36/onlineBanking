@@ -36,12 +36,16 @@ type FormData = z.infer<typeof transferFunSchema>;
 const TransferFund: FC<TransferFundProps> = () => {
   const [fundType, setFundType] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  console.log('errors', errors);
   const [showCongrat, setShowCongrate] = useState(false);
 
   const [step, setStep] = useState(1);
   const [subStep, setSubStep] = useState<'TAC' | 'DWTC' | 'NON_RESIDENT'>(
     'TAC'
   );
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  console.log('user', user);
+
   const [formData, setFormData] = useState<FormData>({
     amount: '',
     name: '',
@@ -138,10 +142,18 @@ const TransferFund: FC<TransferFundProps> = () => {
   };
 
   useEffect(() => {
-    setErrors({});
-  }, [step]);
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      if (step === 4) {
+        delete newErrors.tacCode;
+        delete newErrors.dwtcCode;
+        delete newErrors.noneResidentTax;
+      }
+      return newErrors;
+    });
+  }, [subStep]);
 
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  // const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [, setIsLoading] = useState(false);
 
@@ -150,7 +162,7 @@ const TransferFund: FC<TransferFundProps> = () => {
       setLoading(true); // reset to true when step 4 starts
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 4000);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -194,34 +206,70 @@ const TransferFund: FC<TransferFundProps> = () => {
     }
   };
 
-  const handleSubStepNext = () => {
-    if (subStep === 'TAC' && !formData.tacCode) {
-      setErrors((prev) => ({ ...prev, tacCode: 'TAC Code is required' }));
-      return;
-    }
-
-    if (subStep === 'DWTC' && !formData.dwtcCode) {
-      setErrors((prev) => ({ ...prev, dwtcCode: 'DWTC Code is required' }));
-      return;
-    }
-
-    if (subStep === 'NON_RESIDENT' && !formData.noneResidentTax) {
+  const validateCode = (
+    code: string,
+    userCode: string,
+    fieldName: string,
+    errorMsg: string
+  ) => {
+    if (!code) {
       setErrors((prev) => ({
         ...prev,
-        noneResidentTax: 'Non-Resident Tax is required',
+        [fieldName]: `${errorMsg} is required`,
       }));
-      return;
+      return false;
     }
 
-    // If input is filled, move to next subStep
-    if (subStep === 'TAC') {
-      setSubStep('DWTC');
-    } else if (subStep === 'DWTC') {
-      setSubStep('NON_RESIDENT');
-    } else if (subStep === 'NON_RESIDENT') {
-      nextStep(); // move to final success page after last input
+    if (code === userCode) {
+      return true;
+    } else {
+      setErrors((prev) => ({ ...prev, [fieldName]: `Invalid ${errorMsg}` }));
+      return false;
     }
   };
+
+  const handleSubStepNext = async () => {
+    try {
+      if (subStep === 'TAC') {
+        if (
+          validateCode(formData.tacCode, user.tacCode, 'tacCode', 'TAC Code')
+        ) {
+          setSubStep('DWTC');
+        }
+      } else if (subStep === 'DWTC') {
+        if (
+          validateCode(
+            formData.dwtcCode,
+            user.dwtcCode,
+            'dwtcCode',
+            'DWTC Code'
+          )
+        ) {
+          setSubStep('NON_RESIDENT');
+        }
+      } else if (subStep === 'NON_RESIDENT') {
+        if (
+          validateCode(
+            formData.noneResidentTax,
+            user.txcCode,
+            'noneResidentTax',
+            'Non-Resident Tax code'
+          )
+        ) {
+          handleSubmit;
+          setShowCongrate(true);
+          // nextStep(); // Success
+        }
+      }
+    } catch (error) {
+      console.error(`${subStep} validation error`, error);
+      setErrors((prev) => ({
+        ...prev,
+        [`${subStep.toLowerCase()}Code`]: `Server error validating ${subStep}`,
+      }));
+    }
+  };
+
   return (
     <MainDashboard title={'Transfer'}>
       {showCongrat ? (
@@ -468,40 +516,43 @@ const TransferFund: FC<TransferFundProps> = () => {
                           <p className='text-[red]'>
                             You need to enter TAC to Proceed
                           </p>
-                          <div className='flex items-center gap-2'>
-                            <HomeInput
-                              type={'text'}
-                              placeholder={'Enter TAC'}
-                              name='tacCode' // Make sure name is set
-                              value={formData.tacCode} // Bind the value to formData.tacCode
-                              onChange={handleChange}
-                              onKeyPress={(
-                                event: React.KeyboardEvent<HTMLInputElement>
-                              ) => {
-                                if (!/[0-9 +]/.test(event.key)) {
-                                  event.preventDefault();
+                          <div>
+                            <div className='flex items-center gap-2'>
+                              <HomeInput
+                                type={'text'}
+                                placeholder={'Enter TAC'}
+                                name='tacCode' // Make sure name is set
+                                value={formData.tacCode || ''} // Bind the value to formData.tacCode
+                                onChange={handleChange}
+                                onKeyPress={(
+                                  event: React.KeyboardEvent<HTMLInputElement>
+                                ) => {
+                                  if (!/[0-9 +]/.test(event.key)) {
+                                    event.preventDefault();
+                                  }
+                                }}
+                                border={
+                                  errors.tacCode
+                                    ? 'border-[#EF4444]'
+                                    : 'border-[#E8ECEF]'
                                 }
-                              }}
-                              border={
-                                errors.tacCode
-                                  ? 'border-[#EF4444]'
-                                  : 'border-[#E8ECEF]'
-                              }
-                            />
-                            <HomeButton
-                              title={'Continue'}
-                              type={'button'}
-                              bg={'blue'}
-                              width={''}
-                              // onClick={() => setSubStep('DWTC')}
-                              onClick={handleSubStepNext}
-                            />
+                              />
+
+                              <HomeButton
+                                title={'Continue'}
+                                type={'button'}
+                                bg={'blue'}
+                                width={''}
+                                // onClick={() => setSubStep('DWTC')}
+                                onClick={handleSubStepNext}
+                              />
+                            </div>
+                            {errors.tacCode && (
+                              <p className='text-sm text-red-500 mt-1'>
+                                {errors.tacCode}
+                              </p>
+                            )}
                           </div>
-                          {errors.tacCode && (
-                            <p className='text-red-500 text-sm'>
-                              {errors.terms}
-                            </p>
-                          )}
                         </>
                       )}
 
@@ -515,39 +566,42 @@ const TransferFund: FC<TransferFundProps> = () => {
                             </p>
                           </div>
                         ) : (
-                          <div className='flex flex-col m-auto justify-center items-center w-full md:w-[50%] gap-4'>
-                            <HomeInput
-                              name='dwtcCode'
-                              type='text'
-                              placeholder=''
-                              label='Enter DWTC Code'
-                              value={formData.dwtcCode}
-                              onChange={handleChange}
-                              onKeyPress={(
-                                event: React.KeyboardEvent<HTMLInputElement>
-                              ) => {
-                                if (!/[0-9 +]/.test(event.key)) {
-                                  event.preventDefault();
+                          <div>
+                            <div className='flex sm:flex-col m-auto justify-center items-center w-full md:w-[100%] gap-4'>
+                              <HomeInput
+                                name='dwtcCode'
+                                type='text'
+                                placeholder=''
+                                label='Enter DWTC Code'
+                                value={formData.dwtcCode || ''}
+                                onChange={handleChange}
+                                onKeyPress={(
+                                  event: React.KeyboardEvent<HTMLInputElement>
+                                ) => {
+                                  if (!/[0-9 +]/.test(event.key)) {
+                                    event.preventDefault();
+                                  }
+                                }}
+                                border={
+                                  errors.dwtcCode
+                                    ? 'border-[#EF4444]'
+                                    : 'border-[#E8ECEF]'
                                 }
-                              }}
-                              border={
-                                errors.dwtcCode
-                                  ? 'border-[#EF4444]'
-                                  : 'border-[#E8ECEF]'
-                              }
-                            />
+                              />
+
+                              <HomeButton
+                                onClick={handleSubStepNext}
+                                title='Next'
+                                type={'submit'}
+                                bg={'blue'}
+                                width={'100%'}
+                              />
+                            </div>
                             {errors.dwtcCode && (
-                              <p className='text-sm text-red-500'>
+                              <p className='text-sm text-red-500 mt-1'>
                                 {errors.dwtcCode}
                               </p>
                             )}
-                            <HomeButton
-                              onClick={handleSubStepNext}
-                              title='Next'
-                              type={'submit'}
-                              bg={'blue'}
-                              width={'100%'}
-                            />
                           </div>
                         ))}
 
@@ -556,39 +610,47 @@ const TransferFund: FC<TransferFundProps> = () => {
                           <p className='text-[red]'>
                             Please provide Non-Resident Tax Code
                           </p>
-                          <div className='flex items-center gap-2'>
-                            <HomeInput
-                              type={'text'}
-                              placeholder={'Enter Non-ResidentTax Code'}
-                              name='noneResidentTax' // Make sure name is set
-                              value={formData.noneResidentTax} // Bind the value to formData.tacCode
-                              onChange={handleChange}
-                              onKeyPress={(
-                                event: React.KeyboardEvent<HTMLInputElement>
-                              ) => {
-                                if (!/[0-9 +]/.test(event.key)) {
-                                  event.preventDefault();
+                          <div>
+                            <div className='flex items-center gap-2'>
+                              <HomeInput
+                                type={'text'}
+                                placeholder={'Enter Non-ResidentTax Code'}
+                                name='noneResidentTax' // Make sure name is set
+                                value={formData.noneResidentTax || ''} // Bind the value to formData.tacCode
+                                onChange={handleChange}
+                                onKeyPress={(
+                                  event: React.KeyboardEvent<HTMLInputElement>
+                                ) => {
+                                  if (!/[0-9 +]/.test(event.key)) {
+                                    event.preventDefault();
+                                  }
+                                }}
+                                border={
+                                  errors.noneResidentTax
+                                    ? 'border-[#EF4444]'
+                                    : 'border-[#E8ECEF]'
                                 }
-                              }}
-                              border={
-                                errors.noneResidentTax
-                                  ? 'border-[#EF4444]'
-                                  : 'border-[#E8ECEF]'
-                              }
-                            />
-                            <HomeButton
-                              title={'Continue'}
-                              type={'submit'}
-                              bg={'blue'}
-                              width={''}
-                              onClick={handleSubmit}
-                            />
+                              />
+                              <HomeButton
+                                title={'Continue'}
+                                type={'submit'}
+                                bg={'blue'}
+                                width={''}
+                                onClick={handleSubStepNext}
+                                // onClick={handleSubmit}
+                              />
+                            </div>
+                            {errors.noneResidentTax && (
+                              <p className='text-sm text-red-500 mt-1'>
+                                {errors.noneResidentTax}
+                              </p>
+                            )}
                           </div>
-                          {errors.noneResidentTax && (
+                          {/* {errors.noneResidentTax && (
                             <p className='text-red-500 text-sm'>
                               {errors.terms}
                             </p>
-                          )}
+                          )} */}
                         </>
                       )}
                     </>
