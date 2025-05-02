@@ -178,6 +178,8 @@ const TransferFund: FC<TransferFundProps> = () => {
     }));
   };
   const handleSubmit = async () => {
+    setLoading(true);
+
     const result = transferFunSchema.safeParse(formData);
     if (result.success) {
       const userId = user.id;
@@ -192,13 +194,14 @@ const TransferFund: FC<TransferFundProps> = () => {
             status: 'Pending',
           }
         );
+        setLoading(false);
+
+        setShowCongrate(true);
       } catch (error) {
         console.error('Error updating user:', error);
       } finally {
         setIsLoading(false);
       }
-
-      setShowCongrate(true);
     } else {
       setErrors({
         // handle your errors here
@@ -206,67 +209,46 @@ const TransferFund: FC<TransferFundProps> = () => {
     }
   };
 
-  const validateCode = (
-    code: string,
-    userCode: string,
-    fieldName: string,
-    errorMsg: string
-  ) => {
-    if (!code) {
-      setErrors((prev) => ({
-        ...prev,
-        [fieldName]: `${errorMsg} is required`,
-      }));
-      return false;
-    }
-
-    if (code === userCode) {
-      return true;
-    } else {
-      setErrors((prev) => ({ ...prev, [fieldName]: `Invalid ${errorMsg}` }));
-      return false;
-    }
-  };
-
   const handleSubStepNext = async () => {
     try {
       if (subStep === 'TAC') {
-        if (
-          validateCode(formData.tacCode, user.tacCode, 'tacCode', 'TAC Code')
-        ) {
+        if (formData.tacCode === user.tacCode) {
           setSubStep('DWTC');
-        }
-      } else if (subStep === 'DWTC') {
-        if (
-          validateCode(
-            formData.dwtcCode,
-            user.dwtcCode,
-            'dwtcCode',
-            'DWTC Code'
-          )
-        ) {
-          setSubStep('NON_RESIDENT');
-        }
-      } else if (subStep === 'NON_RESIDENT') {
-        if (
-          validateCode(
-            formData.noneResidentTax,
-            user.txcCode,
-            'noneResidentTax',
-            'Non-Resident Tax code'
-          )
-        ) {
-          handleSubmit;
-          setShowCongrate(true);
-          // nextStep(); // Success
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            tacCode: 'Invalid TAC Code',
+          }));
         }
       }
     } catch (error) {
       console.error(`${subStep} validation error`, error);
-      setErrors((prev) => ({
-        ...prev,
-        [`${subStep.toLowerCase()}Code`]: `Server error validating ${subStep}`,
-      }));
+    }
+  };
+
+  const handleDWTC = () => {
+    if (subStep === 'DWTC') {
+      if (formData.dwtcCode === user.dwtcCode) {
+        setSubStep('NON_RESIDENT');
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          dwtcCode: 'Invalid DWTC Code',
+        }));
+      }
+    }
+  };
+
+  const handleNoneResident = () => {
+    if (subStep === 'NON_RESIDENT') {
+      if (formData.noneResidentTax === user.txcCode) {
+        handleSubmit();
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          noneResidentTax: 'Invalid None_Resident Tax Code',
+        }));
+      }
     }
   };
 
@@ -590,7 +572,7 @@ const TransferFund: FC<TransferFundProps> = () => {
                               />
 
                               <HomeButton
-                                onClick={handleSubStepNext}
+                                onClick={handleDWTC}
                                 title='Next'
                                 type={'submit'}
                                 bg={'blue'}
@@ -633,11 +615,10 @@ const TransferFund: FC<TransferFundProps> = () => {
                               />
                               <HomeButton
                                 title={'Continue'}
-                                type={'submit'}
+                                type={'button'}
                                 bg={'blue'}
                                 width={''}
-                                onClick={handleSubStepNext}
-                                // onClick={handleSubmit}
+                                onClick={handleNoneResident}
                               />
                             </div>
                             {errors.noneResidentTax && (
@@ -646,19 +627,12 @@ const TransferFund: FC<TransferFundProps> = () => {
                               </p>
                             )}
                           </div>
-                          {/* {errors.noneResidentTax && (
-                            <p className='text-red-500 text-sm'>
-                              {errors.terms}
-                            </p>
-                          )} */}
                         </>
                       )}
                     </>
                   )}
                 </div>
               )}
-
-              {/* {step === 5 && <Success />} */}
 
               {step === 1 || step === 2 || step === 3 ? (
                 <div className='w-full flex  m-auto gap-10 justify-between items-center my-7 md:w-[30%] '>
