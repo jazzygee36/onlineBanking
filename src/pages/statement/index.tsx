@@ -20,7 +20,7 @@ const Statement = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [allStatements, setAllStatements] = useState<Statement[]>([]);
-  console.log('allStatements', allStatements);
+
   const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   useEffect(() => {

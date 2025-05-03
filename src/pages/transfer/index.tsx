@@ -36,7 +36,7 @@ type FormData = z.infer<typeof transferFunSchema>;
 const TransferFund: FC<TransferFundProps> = () => {
   const [fundType, setFundType] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  console.log('errors', errors);
+
   const [showCongrat, setShowCongrate] = useState(false);
 
   const [step, setStep] = useState(1);
@@ -44,7 +44,6 @@ const TransferFund: FC<TransferFundProps> = () => {
     'TAC'
   );
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  console.log('user', user);
 
   const [formData, setFormData] = useState<FormData>({
     amount: '',
