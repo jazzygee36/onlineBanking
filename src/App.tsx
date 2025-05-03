@@ -34,7 +34,7 @@ const AutoLogout = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       logoutUser();
-    }, 1 * 60 * 1000); // 5 minutes
+    }, 2 * 60 * 1000); // 5 minutes
   };
 
   useEffect(() => {

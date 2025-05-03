@@ -45,9 +45,9 @@ const Statement = () => {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
+      // hour: 'numeric',
+      // minute: '2-digit',
+      // hour12: true,
     };
     return new Date(dateString).toLocaleString('en-US', options);
   };
@@ -91,9 +91,7 @@ const Statement = () => {
                     <td className='p-2'>{statement.senderBank}</td>
                     <td className='p-2'>{statement.amount.toLocaleString()}</td>
                     <td className='p-2'>{statement.status}</td>
-                    <td className='p-2'>
-                      {formatDateTime(statement.updatedAt)}
-                    </td>
+                    <td className='p-2'>{formatDateTime(statement.date)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -132,7 +130,7 @@ const Statement = () => {
                 <div className='flex justify-between items-center mb-2'>
                   <span className='font-normal'>Date:</span>
                   <span className='font-medium'>
-                    {formatDateTime(statement.updatedAt)}
+                    {formatDateTime(statement.date)}
                   </span>
                 </div>
                 <div className='flex justify-between items-center mb-2'>
