@@ -1,4 +1,11 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import HomePage from './pages/home';
 import About from './pages/about';
 import Contact from './pages/contact';
@@ -13,12 +20,59 @@ import Profile from './pages/profile';
 import PayBill from './pages/payBill';
 import TransferFund from './pages/transfer';
 
-const App = () => {
-  // PrivateRoute component
-  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-    const isAuthenticated = !!localStorage.getItem('token');
-    return isAuthenticated ? <>{children}</> : (window.location.href = '/');
+// AutoLogout component
+const AutoLogout = () => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const navigate = useNavigate();
+
+  const logoutUser = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
   };
+
+  const resetTimer = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      logoutUser();
+    }, 1 * 60 * 1000); // 5 minutes
+  };
+
+  useEffect(() => {
+    const events = ['mousemove', 'keydown', 'click', 'scroll'];
+    events.forEach((event) => window.addEventListener(event, resetTimer));
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) resetTimer();
+    });
+
+    resetTimer();
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      events.forEach((event) => window.removeEventListener(event, resetTimer));
+    };
+  }, []);
+
+  return null;
+};
+
+// PrivateRoute wrapper
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = !!localStorage.getItem('token');
+
+  if (!isAuthenticated) {
+    window.location.href = '/';
+    return null;
+  }
+
+  return (
+    <>
+      <AutoLogout />
+      {children}
+    </>
+  );
+};
+
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -30,7 +84,8 @@ const App = () => {
         <Route path='/faq' element={<FAQ />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<SignUp />} />
-        {/* PROTECTED ROUTES */}
+
+        {/* Protected Routes */}
         <Route
           path='/dashboard'
           element={
@@ -79,7 +134,6 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        {/* <Route path='/dashboard' element={<Dashboard />} /> */}
       </Routes>
     </BrowserRouter>
   );

@@ -114,7 +114,7 @@ const Login = () => {
         <div className='w-[95%] md:w-[555px] m-auto bg-white p-5 md:p-11 rounded-md text-[#1E1E1E] flex flex-col items-center'>
           <div className='mb-[40px]'>
             <h1 className='text-center text-[30px] font-[400] font-roboto text-[#1B1E24]'>
-              Welcome to Trust Ensure Finance
+              Welcome to Trust Success Finance
             </h1>
             <p className='text-center text-[#252631] text-[14px] font-[400]'>
               Enter your login credentials below.

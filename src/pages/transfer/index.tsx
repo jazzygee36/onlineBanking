@@ -549,7 +549,7 @@ const TransferFund: FC<TransferFundProps> = () => {
                           </div>
                         ) : (
                           <div>
-                            <div className='flex sm:flex-col m-auto justify-center items-center w-full md:w-[100%] gap-4'>
+                            <div className='flex flex-col m-auto justify-center items-center w-full md:w-[100%] gap-4'>
                               <HomeInput
                                 name='dwtcCode'
                                 type='text'
