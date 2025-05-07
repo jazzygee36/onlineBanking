@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface ProgressBarProps {
   step: number; // values 1 through 4
 }
